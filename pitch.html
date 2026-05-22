@@ -6,19 +6,36 @@
     <title>Narayana Health - Oncology Growth Strategy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* 1. THE SETUP */
+        /* NH BRAND COLORS */
+        :root {
+            --nh-blue: #004b95;
+            --nh-red: #e31c23;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-light: #f8fafc;
+        }
+
         * { box-sizing: border-box; }
         p { margin: 0; margin-bottom: 12px; }
-        body { background-color: #0f172a; display: grid; gap: 20px; grid-template-columns: 1fr; margin: 0; min-height: 100vh; padding: 20px 0; place-items: center; }
+        body { 
+            background-color: #e2e8f0; 
+            display: grid; 
+            gap: 30px; 
+            grid-template-columns: 1fr; 
+            margin: 0; 
+            min-height: 100vh; 
+            padding: 30px 0; 
+            place-items: center; 
+        }
 
         .slide-container {
             align-items: flex-start;
-            background-color: #020617;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             font-family: 'Inter', sans-serif;
@@ -28,95 +45,96 @@
             padding: 60px;
             position: relative;
             width: 1280px;
-            color: #f8fafc;
+            color: var(--text-main);
+            border-top: 8px solid var(--nh-blue);
         }
 
-        /* 1.1 BACKGROUND STYLING (NH Brand Elements) */
+        /* WATERMARK */
         .slide-container::before {
-            content: '';
+            content: '\f479'; /* Hospital icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 90% 10%, rgba(0, 75, 149, 0.1) 0%, transparent 40%),
-                        radial-gradient(circle at 10% 90%, rgba(227, 28, 35, 0.05) 0%, transparent 30%);
+            top: -50px;
+            right: -50px;
+            font-size: 400px;
+            color: rgba(0, 75, 149, 0.03);
             z-index: 0;
-        }
-
-        .slide-container::after {
-            background: rgba(245, 245, 245, 0.1);
-            bottom: 40px;
-            content: '';
-            height: 1px;
-            left: 60px;
-            position: absolute;
-            right: 60px;
+            transform: rotate(-15deg);
         }
 
         .slide-container>* { position: relative; z-index: 1; }
 
-        /* 2. CONSISTENT TYPOGRAPHY */
-        .slide-container h1, .slide-container h2, .slide-container h3 {
-            color: #f8fafc;
-            font-weight: 700;
-            font-family: 'Urbanist', sans-serif;
-            margin: 0;
-        }
-
-        .slide-container .slide-title {
+        /* TYPOGRAPHY */
+        h1, h2, h3 { font-family: 'Urbanist', sans-serif; color: var(--nh-blue); margin: 0; }
+        
+        .slide-title {
             font-size: 42px;
-            font-weight: 800;
+            font-weight: 900;
             margin-bottom: 30px;
             text-align: left;
             width: 100%;
-            border-left: 8px solid #e31c23;
+            border-left: 8px solid var(--nh-red);
             padding-left: 20px;
             line-height: 1.1;
+            color: var(--nh-blue);
         }
 
-        .slide-container h1 { font-size: 64px; line-height: 1; margin-bottom: 20px; }
-        .slide-container h1 span { color: #38bdf8; }
-        .slide-container h3 { font-size: 24px; color: #38bdf8; margin-bottom: 15px; }
-        .slide-container p, .slide-container li { font-size: 18px; line-height: 1.5; color: #94a3b8; }
+        h1 { font-size: 64px; line-height: 1.1; margin-bottom: 20px; font-weight: 900; }
+        h1 span { color: var(--nh-red); }
+        h3 { font-size: 24px; margin-bottom: 15px; font-weight: 800; }
+        p, li { font-size: 18px; line-height: 1.6; color: var(--text-main); }
 
-        /* 3. LAYOUT DEFINITIONS */
         .content-area { display: flex; flex-direction: column; flex-grow: 1; width: 100%; justify-content: center; }
 
-        /* Title Slide Custom Pack */
-        .title-layout { text-align: left; width: 100%; }
-        .metrics-bar { display: flex; gap: 40px; margin-top: 50px; }
-        .metric-item { background: rgba(30, 41, 59, 0.5); padding: 25px; border-radius: 12px; border: 1px solid #1e293b; flex: 1; }
-        .metric-item .val { font-size: 48px; font-weight: 800; color: #e31c23; font-family: 'Urbanist'; }
-        .metric-item .lbl { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #cbd5e1; }
+        /* HEADER LOGO */
+        .logo-box { position: absolute; top: 50px; right: 60px; text-align: right; }
+        .logo-box .nh-title { font-family: 'Urbanist'; font-weight: 900; font-size: 32px; color: var(--nh-blue); letter-spacing: -1px; }
+        .logo-box .nh-sub { font-family: 'Urbanist'; font-weight: 800; font-size: 14px; color: var(--nh-red); text-transform: uppercase; letter-spacing: 4px; margin-top: -6px; }
 
-        /* Image Right Layout */
-        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; width: 100%; }
-        .image-wrapper { border-radius: 16px; height: 400px; overflow: hidden; border: 1px solid #334155; }
-        .image-wrapper img { width: 100%; height: 100%; object-fit: contain; background: #0f172a; }
+        /* METRICS BAR (Slide 1) */
+        .metrics-bar { display: flex; gap: 30px; margin-top: 40px; }
+        .metric-item { background: var(--bg-light); padding: 25px; border-radius: 12px; border: 1px solid #cbd5e1; flex: 1; border-bottom: 4px solid var(--nh-red); }
+        .metric-item .val { font-size: 56px; font-weight: 900; color: var(--nh-blue); font-family: 'Urbanist'; line-height: 1; margin-bottom: 5px; }
+        .metric-item .lbl { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+
+        /* TWO COLUMN LAYOUT */
+        .two-column { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center; width: 100%; }
+        
+        /* BULLET LISTS */
         .bullet-list { list-style: none; padding: 0; }
-        .bullet-list li { margin-bottom: 15px; padding-left: 30px; position: relative; }
-        .bullet-list li i { position: absolute; left: 0; top: 5px; color: #e31c23; font-size: 18px; }
+        .bullet-list li { margin-bottom: 20px; padding-left: 40px; position: relative; }
+        .bullet-list li i { position: absolute; left: 0; top: 4px; color: var(--nh-red); font-size: 24px; }
 
-        /* Table Layout */
+        /* ICON GRID (Replaces broken image on Slide 2) */
+        .icon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .icon-box { background: var(--bg-light); border: 1px solid #e2e8f0; border-radius: 16px; padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .icon-box i { font-size: 48px; color: var(--nh-blue); margin-bottom: 15px; }
+        .icon-box span { font-weight: 700; font-size: 16px; color: var(--text-main); }
+
+        /* TABLE (Slide 3) */
         .table-layout { width: 100%; margin-top: 10px; }
-        .table-layout table { width: 100%; border-collapse: collapse; }
-        .table-layout th { text-align: left; padding: 15px; background: #1e293b; color: #38bdf8; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
-        .table-layout td { padding: 18px 15px; border-bottom: 1px solid #1e293b; font-size: 17px; }
-        .table-layout tr.total-row { background: rgba(56, 189, 248, 0.1); font-weight: 700; color: #fff; }
-        .table-layout tr.total-row td { border-bottom: 2px solid #38bdf8; }
+        .table-layout table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid #cbd5e1; }
+        .table-layout th { text-align: left; padding: 18px; background: var(--nh-blue); color: white; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .table-layout td { padding: 18px; border-bottom: 1px solid #e2e8f0; font-size: 18px; font-weight: 600; }
+        .table-layout tr:nth-child(even) { background-color: var(--bg-light); }
+        .table-layout tr.total-row { background: var(--nh-red); color: white; font-weight: 800; font-size: 20px; }
+        .table-layout tr.total-row td { border-bottom: none; color: white; }
 
-        /* Timeline Layout */
-        .timeline-layout { display: flex; justify-content: space-between; position: relative; width: 100%; margin-top: 80px; }
-        .timeline-line { position: absolute; top: 12px; left: 0; width: 100%; height: 4px; background: #1e293b; }
-        .timeline-item { flex: 1; position: relative; text-align: center; padding: 0 10px; }
-        .timeline-item::before { content: ''; position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background: #e31c23; border-radius: 50%; border: 4px solid #020617; }
-        .timeline-item h3 { margin-top: 40px; font-size: 20px; }
-        .timeline-item p { font-size: 14px; }
+        /* ASSET MULTIPLIER BOX */
+        .asset-box { background: var(--nh-blue); color: white; padding: 30px; border-radius: 16px; display: flex; align-items: center; gap: 25px; margin-top: 30px; }
+        .asset-box i { font-size: 64px; color: var(--nh-red); }
+        .asset-box h3 { color: white; margin-bottom: 5px; }
+        .asset-box p { color: #e2e8f0; font-size: 16px; margin: 0; font-weight: 400; }
 
-        .logo-box { position: absolute; top: 60px; right: 60px; text-align: right; }
-        .logo-box .nh-title { font-family: 'Urbanist'; font-weight: 800; font-size: 28px; color: #fff; }
-        .logo-box .nh-sub { font-family: 'Urbanist'; font-weight: 700; font-size: 12px; color: #e31c23; text-transform: uppercase; letter-spacing: 3px; margin-top: -5px; }
+        /* TIMELINE (Slide 4) */
+        .timeline-layout { display: flex; justify-content: space-between; position: relative; width: 100%; margin-top: 60px; }
+        .timeline-line { position: absolute; top: 16px; left: 0; width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; }
+        .timeline-item { flex: 1; position: relative; text-align: center; padding: 0 15px; }
+        .timeline-item::before { content: ''; position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 30px; height: 30px; background: white; border-radius: 50%; border: 6px solid var(--nh-blue); z-index: 2; }
+        .timeline-item h3 { margin-top: 45px; font-size: 22px; color: var(--nh-blue); }
+        .timeline-item p { font-size: 15px; color: var(--text-muted); font-weight: 600; }
+
     </style>
 </head>
 <body>
@@ -129,7 +147,9 @@
     <div class="content-area">
         <div class="title-layout">
             <h1>The Case for a <span>Consensus Board</span> Strategy</h1>
-            <p style="font-size: 22px; max-width: 850px;">Transforming our internal Tumor Board into a consumer-facing Digital Gateway to capture un-homed oncology patients and fill tertiary care capacity.</p>
+            <p style="font-size: 24px; max-width: 900px; color: var(--text-muted); font-weight: 600;">
+                Transforming our internal Tumor Board into a consumer-facing Digital Gateway to capture un-homed oncology patients and fill tertiary care capacity.
+            </p>
             
             <div class="metrics-bar">
                 <div class="metric-item">
@@ -137,50 +157,71 @@
                     <div class="lbl">Monthly Oncology Searches</div>
                 </div>
                 <div class="metric-item">
-                    <div class="val">+900%</div>
+                    <div class="val" style="color: var(--nh-blue);">+900%</div>
                     <div class="lbl">Growth in "Second Opinion" Intent</div>
                 </div>
-                <div class="metric-item">
-                    <div class="val">₹45.0L</div>
-                    <div class="lbl">Estimated Monthly Revenue Leakage</div>
+                <div class="metric-item" style="background-color: var(--nh-red); border: none;">
+                    <div class="val" style="color: white;">₹45.0L</div>
+                    <div class="lbl" style="color: #ffb3b6;">Est. Monthly Revenue Leakage</div>
                 </div>
             </div>
-            <p style="margin-top: 40px; color: #64748b; font-style: italic;">*Search data validated via Google Keyword Planner (May 2026).</p>
+            <p style="margin-top: 30px; color: var(--text-muted); font-size: 14px; font-weight: 600;">
+                <i class="fa-solid fa-circle-info" style="color: var(--nh-blue); margin-right: 5px;"></i> Search data validated via Google Keyword Planner (May 2026).
+            </p>
         </div>
     </div>
 </div>
 
 <div class="slide-container" id="slide2">
+    <div class="logo-box"><div class="nh-title">NARAYANA</div><div class="nh-sub">HEALTH</div></div>
     <h2 class="slide-title">The Digital Gateway: Frictionless Intake</h2>
+    
     <div class="content-area">
         <div class="two-column">
             <div>
-                <h3>Bridging the Information Gap</h3>
                 <ul class="bullet-list">
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>WhatsApp Triage:</strong> Immediate ingestion of PET-CT/Biopsy reports via automated chat, eliminating hospital travel friction.</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>The Operational Shield:</strong> Dedicated Onco-Coordinator structures cases into 1-page summaries, requiring only 30 mins of HOD time per week.</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Consensus as a Product:</strong> Delivery of a definitive treatment blueprint co-signed by Medical, Surgical, and Radiation specialists.</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Trust Factor:</strong> Moves patients from "Research Phase" to "Treatment Phase" with NH as the ultimate authority.</li>
+                    <li><i class="fa-brands fa-whatsapp"></i> <strong>WhatsApp Triage:</strong> Immediate ingestion of PET-CT/Biopsy reports via automated chat, eliminating hospital travel friction.</li>
+                    <li><i class="fa-solid fa-user-nurse"></i> <strong>The Operational Shield:</strong> Dedicated Onco-Coordinator structures cases into 1-page summaries, requiring only 30 mins of HOD time per week.</li>
+                    <li><i class="fa-solid fa-file-signature"></i> <strong>Consensus as a Product:</strong> Delivery of a definitive treatment blueprint co-signed by Medical, Surgical, and Radiation specialists.</li>
+                    <li><i class="fa-solid fa-shield-halved"></i> <strong>Trust Factor:</strong> Moves patients from "Research Phase" to "Treatment Phase" with NH as the ultimate authority.</li>
                 </ul>
             </div>
-            <div class="image-wrapper">
-                <img src="http://googleusercontent.com/image_collection/image_retrieval/4250600125713323238" alt="Oncology team reviewing scans">
+            
+            <div class="icon-grid">
+                <div class="icon-box">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span>Digital Intake</span>
+                </div>
+                <div class="icon-box">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                    <span>Board Review</span>
+                </div>
+                <div class="icon-box">
+                    <i class="fa-solid fa-laptop-medical"></i>
+                    <span>Asset Mapping</span>
+                </div>
+                <div class="icon-box" style="border-color: var(--nh-red); border-width: 2px;">
+                    <i class="fa-solid fa-check-double" style="color: var(--nh-red);"></i>
+                    <span>NH Consensus</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="slide-container" id="slide3">
+    <div class="logo-box"><div class="nh-title">NARAYANA</div><div class="nh-sub">HEALTH</div></div>
     <h2 class="slide-title">Monetizing the Leakage: Financial Model</h2>
+    
     <div class="content-area">
         <div class="table-layout">
             <table>
                 <thead>
                     <tr>
                         <th>Funnel Stage</th>
-                        <th>Conversion Rate</th>
-                        <th>Patient Count</th>
-                        <th>Estimated Revenue Value</th>
+                        <th>Conversion Target</th>
+                        <th>Est. Patient Count</th>
+                        <th>Monthly Revenue Value</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -188,13 +229,13 @@
                         <td>Paid Second Opinion (Board Fee)</td>
                         <td>Fractional Capture</td>
                         <td>100 Patients</td>
-                        <td>₹5,00,000</td>
+                        <td style="color: var(--nh-blue);">₹5,00,000</td>
                     </tr>
                     <tr>
-                        <td>Surgical Conversions (IPD)</td>
+                        <td>Tertiary Conversions (IPD / Radiation)</td>
                         <td>10% Downstream</td>
                         <td>10 Patients</td>
-                        <td>₹40,00,000</td>
+                        <td style="color: var(--nh-blue);">₹40,00,000</td>
                     </tr>
                     <tr class="total-row">
                         <td colspan="3">TOTAL MONTHLY MISSED OPPORTUNITY</td>
@@ -203,26 +244,27 @@
                 </tbody>
             </table>
         </div>
-        <div class="two-column" style="margin-top: 30px; gap: 30px;">
-            <div class="image-wrapper" style="height: 180px;">
-                <img src="http://googleusercontent.com/image_collection/image_retrieval/14111792653515933424" alt="LINAC Machine">
-            </div>
+        
+        <div class="asset-box">
+            <i class="fa-solid fa-radiation"></i>
             <div>
-                <h3 style="margin-bottom: 5px;">Asset Multiplier</h3>
-                <p style="font-size: 16px;">The Board acts as a "Trojan Horse" for high-value tertiary care. One converted patient fills <strong>25-30 LINAC slots</strong> and fills surgical OTs with high-complexity cases at zero acquisition cost.</p>
+                <h3>The Underutilized Asset Multiplier</h3>
+                <p>The Board acts as a "Trojan Horse" for high-value tertiary care. One converted patient fills <strong>25-30 LINAC slots</strong> and fills surgical OTs with high-complexity cases at zero acquisition cost.</p>
             </div>
         </div>
     </div>
 </div>
 
 <div class="slide-container" id="slide4">
+    <div class="logo-box"><div class="nh-title">NARAYANA</div><div class="nh-sub">HEALTH</div></div>
     <h2 class="slide-title">2026 Implementation Roadmap</h2>
+    
     <div class="content-area">
         <div class="timeline-layout">
             <div class="timeline-line"></div>
             <div class="timeline-item">
                 <h3>Phase 1: Pilot Launch</h3>
-                <p>Digital Portal & WhatsApp Bot Deployment; Regional targeting in Raipur & Bhilai.</p>
+                <p>Digital Portal & WhatsApp Bot Deployment; Regional targeting in Raipur.</p>
             </div>
             <div class="timeline-item">
                 <h3>Phase 2: Triage</h3>
@@ -230,7 +272,7 @@
             </div>
             <div class="timeline-item">
                 <h3>Phase 3: National Scale</h3>
-                <p>Expanding the proven digital blueprint across all Narayana Health branches India-wide.</p>
+                <p>Expanding the proven digital blueprint across all NH branches India-wide.</p>
             </div>
             <div class="timeline-item">
                 <h3>Phase 4: Optimization</h3>
@@ -238,12 +280,15 @@
             </div>
         </div>
         
-        <div style="margin-top: 100px; text-align: center; width: 100%;">
-            <h2 style="font-size: 60px; color: #fff;">Questions?</h2>
-            <p style="color: #38bdf8; font-weight: 700; text-transform: uppercase;">Let's build the blueprint in Raipur to dominate the National Market.</p>
+        <div style="margin-top: 110px; text-align: center; width: 100%; border-top: 1px solid #e2e8f0; padding-top: 40px;">
+            <h2 style="font-size: 56px; color: var(--nh-blue); font-weight: 900; margin-bottom: 10px;">Questions?</h2>
+            <p style="color: var(--nh-red); font-weight: 800; font-size: 22px; text-transform: uppercase; letter-spacing: 2px;">
+                Let's build the blueprint in Raipur to dominate the National Market.
+            </p>
         </div>
     </div>
 </div>
 
 </body>
+</html>
 </html>
