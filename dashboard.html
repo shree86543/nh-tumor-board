@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NH Tumor Board | Clinical Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .nh-blue { color: #004b95; }
+        .nh-bg-blue { background-color: #004b95; }
+        .nh-red { color: #e31c23; }
+        .nh-bg-red { background-color: #e31c23; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-64 nh-bg-blue text-white flex flex-col hidden md:flex">
+            <div class="h-16 flex items-center px-6 border-b border-blue-800">
+                <span class="text-xl font-bold tracking-tight">Narayana<span class="nh-red ml-1 uppercase text-sm tracking-widest">Health</span></span>
+            </div>
+            <nav class="flex-1 px-4 py-6 space-y-2">
+                <a href="#" class="block px-4 py-2 bg-blue-800 rounded text-sm font-semibold">Live Tumor Board</a>
+                <a href="#" class="block px-4 py-2 text-blue-200 hover:bg-blue-800 rounded text-sm">Archived Consensus</a>
+                <a href="#" class="block px-4 py-2 text-blue-200 hover:bg-blue-800 rounded text-sm">Patient Communications</a>
+            </nav>
+        </aside>
+
+        <div class="flex-1 flex flex-col">
+            <header class="h-16 bg-white shadow-sm flex items-center justify-between px-6 border-b">
+                <h2 class="text-lg font-bold nh-blue">External Case Triage Queue</h2>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm font-bold bg-green-100 text-green-700 px-3 py-1 rounded-full">3 Cases Pending Review</span>
+                    <div class="w-8 h-8 rounded-full nh-bg-blue text-white flex items-center justify-center font-bold text-xs">HOD</div>
+                </div>
+            </header>
+
+            <main class="flex-1 p-6 overflow-auto">
+                <p class="text-sm text-gray-500 mb-6">These cases have been pre-structured by the Clinical Coordinator. Click "Review Summary" to evaluate and append your consensus.</p>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200 text-sm nh-blue uppercase tracking-wider">
+                                <th class="p-4 font-bold">Patient ID & Name</th>
+                                <th class="p-4 font-bold">Origin</th>
+                                <th class="p-4 font-bold">Primary Diagnosis</th>
+                                <th class="p-4 font-bold">Uploaded Assets</th>
+                                <th class="p-4 font-bold">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-4 font-bold text-gray-900">EXT-4092 <br><span class="text-xs text-gray-500 font-normal">S. Verma (Age 54)</span></td>
+                                <td class="p-4">Bhilai, CG</td>
+                                <td class="p-4 font-semibold text-orange-600">Stage 3a Lung (NSCLC) <br><span class="text-xs text-gray-500 font-normal">Seeking TrueBeam validation</span></td>
+                                <td class="p-4">
+                                    <span class="inline-block bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs mr-1 mb-1 border border-blue-200">PET-CT (PDF)</span>
+                                    <span class="inline-block bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs border border-blue-200">Biopsy (IMG)</span>
+                                </td>
+                                <td class="p-4">
+                                    <button class="nh-bg-red text-white px-4 py-2 rounded text-xs font-bold hover:bg-red-700 transition shadow">Review 1-Page Summary</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-4 font-bold text-gray-900">EXT-4093 <br><span class="text-xs text-gray-500 font-normal">R. Singh (Age 61)</span></td>
+                                <td class="p-4">Raipur, CG</td>
+                                <td class="p-4 font-semibold text-orange-600">Prostate Adenocarcinoma <br><span class="text-xs text-gray-500 font-normal">Surgery vs. Radiation consult</span></td>
+                                <td class="p-4">
+                                    <span class="inline-block bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs border border-blue-200">Pre-triage notes</span>
+                                </td>
+                                <td class="p-4">
+                                    <button class="nh-bg-red text-white px-4 py-2 rounded text-xs font-bold hover:bg-red-700 transition shadow">Review 1-Page Summary</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
