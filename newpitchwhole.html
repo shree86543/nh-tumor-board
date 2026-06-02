@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMI Narayana Hospital - Operational Performance Review</title>
+    <style>
+        :root {
+            --nh-blue: #004687;
+            --nh-red: #d6221d;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Slide Container Setup */
+        .presentation-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 60px); /* Leaves space for navigation bar */
+        }
+
+        .slide {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px 60px;
+            background-color: var(--white);
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        /* Slide Headers */
+        .slide-header {
+            margin-bottom: 30px;
+            border-left: 5px solid var(--nh-red);
+            padding-left: 15px;
+        }
+
+        .slide-header h1 {
+            font-size: 2.2rem;
+            color: var(--nh-blue);
+            font-weight: 700;
+        }
+
+        /* Master Layout Grid Utility */
+        .slide-layout-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            height: calc(100% - 80px);
+        }
+
+        /* Content Typography */
+        .content-list {
+            list-style: none;
+        }
+
+        .content-list li {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 30px;
+            color: var(--text-dark);
+        }
+
+        .content-list li::before {
+            content: "•";
+            color: var(--nh-red);
+            font-weight: bold;
+            font-size: 1.8rem;
+            position: absolute;
+            left: 5px;
+            top: -2px;
+        }
+
+        .content-list li strong {
+            color: var(--nh-blue);
+        }
+
+        /* Images Container */
+        .slide-image-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .slide-image-wrapper img {
+            max-width: 100%;
+            max-height: 62vh;
+            object-fit: contain;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 6px;
+        }
+
+        /* Unique Table Styling (Slide 4) */
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .financial-table th {
+            background-color: var(--nh-blue);
+            color: var(--white);
+            padding: 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .financial-table td {
+            padding: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            background: var(--white);
+        }
+
+        .financial-table tr.total-row td {
+            background-color: #fff5f5;
+            border-top: 2px solid var(--nh-red);
+            font-weight: bold;
+            color: var(--nh-red);
+        }
+
+        .multiplier-card {
+            background-color: #f0f7ff;
+            border-left: 4px solid var(--nh-blue);
+            padding: 15px;
+            border-radius: 0 6px 6px 0;
+            margin-top: 15px;
+        }
+
+        .multiplier-card h4 {
+            color: var(--nh-blue);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .multiplier-card p {
+            font-size: 0.98rem;
+            line-height: 1.4;
+            color: var(--text-dark);
+        }
+
+        /* Banner Box (Slide 5) */
+        .summary-banner {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--nh-blue), #002244);
+            color: var(--white);
+            padding: 20px 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: auto;
+            box-shadow: 0 4px 10px rgba(0,43,135,0.15);
+        }
+
+        .summary-banner p {
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .summary-banner strong {
+            color: #5bf5a4;
+        }
+
+        /* Title Slide Layout */
+        .title-slide-container {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 30px;
+            height: 100%;
+            align-items: center;
+        }
+
+        .title-left h1 {
+            font-size: 3rem;
+            color: var(--nh-blue);
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .title-left h2 {
+            font-size: 1.5rem;
+            color: var(--nh-red);
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .meta-info {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        /* Shared Dashboard Layout (Slide 3) */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .dashboard-grid img {
+            max-height: 29vh !important;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        /* Bottom Fixed Controls Panel */
+        .controls-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 1000;
+        }
+
+        .nav-buttons button {
+            background-color: #334155;
+            color: var(--white);
+            border: none;
+            padding: 8px 18px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background 0.2s;
+        }
+
+        .nav-buttons button:hover {
+            background-color: var(--nh-blue);
+        }
+
+        .slide-number {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        .speaker-notes-toggle {
+            background-color: #475569;
+            color: var(--white);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Collapsible Speaker Notes Drawer */
+        .speaker-drawer {
+            position: fixed;
+            bottom: 60px;
+            left: 0;
+            width: 100%;
+            height: 140px;
+            background-color: #f1f5f9;
+            border-top: 3px solid var(--nh-blue);
+            padding: 20px 40px;
+            overflow-y: auto;
+            display: none;
+            z-index: 999;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+
+        .speaker-drawer.open {
+            display: block;
+        }
+
+        .speaker-drawer h4 {
+            color: var(--nh-blue);
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        .speaker-drawer p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #334155;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+
+        <!-- SLIDE 1 -->
+        <section class="slide active" id="slide-1">
+            <div class="title-slide-container">
+                <div class="title-left">
+                    <h1>Operational Optimization & Volume Expansion</h1>
+                    <h2>Final Internship Performance Review</h2>
+                    <div class="meta-info">
+                        <strong>Facility:</strong> MMI Narayana Hospital, Raipur<br>
+                        <strong>Portfolio A:</strong> IP Bot Optimization & Automated Dispatch<br>
+                        <strong>Portfolio B:</strong> Inpatient Expansion via "Tumor Board as a Service"<br>
+                        <strong>Presenter:</strong> Jayashree S (MBA-HC)
+                    </div>
+                </div>
+                <div class="slide-image-wrapper">
+                    <img src="./image_8e9bb6.jpg" alt="SIP Operational Roadmap">
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2 -->
+        <section class="slide" id="slide-2">
+            <div class="slide-header">
+                <h1>Project A: The Inpatient Support Workflow Today</h1>
+            </div>
+            <div class="slide-layout-2col">
+                <div>
+                    <ul class="content-list">
+                        <li><strong>Manual Steps:</strong> Relying on central human intermediaries causes predictable communication delays during operational surges.</li>
+                        <li><strong>Information Leakage:</strong> Vital request parameters (bed designations, ward codes) frequently decay during verbal phone handovers.</li>
+                        <li><strong>Zero Data Visibility:</strong> Off-platform coordination completely hides critical metrics regarding labor capacity and actual turnaround velocities.</li>
+                    </ul>
+                </div>
+                <div class="slide-image-wrapper">
+                    <img src="./image_8e9bd8.jpg" alt="Hybrid Manual-Digital Request Bottleneck">
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3 -->
+        <section class="slide" id="slide-3">
+            <div class="slide-header">
+                <h1>Project A: Touchless Automation & Real-Time Monitoring</h1>
+            </div>
+            <div class="slide-layout-2col">
+                <div>
+                    <ul class="content-list">
+                        <li><strong>100% Touchless Execution:</strong> System completely bypasses the manual desk, dispatching issues programmatically to target field personnel.</li>
+                        <li><strong>Zero Staff Friction:</strong> Deployed entirely within system backend layers, requiring absolutely no on-floor staff retraining or adoption adjustments.</li>
+                        <li><strong>Live Operations Dashboard:</strong> Automated timestamp captures construct a clean, continuous transaction registry without manual entry overhead.</li>
+                        <li><strong>SLA Drift Isolation:</strong> Delivers immediate visibility into outliers, enabling floor managers to dynamically optimize resource deployment.</li>
+                    </ul>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="slide-image-wrapper"><img src="./image_8e9bf7.jpg" alt="Server-to-Device Architecture"></div>
+                    <div class="slide-image-wrapper"><img src="./image_8e9c34.jpg" alt="Operations Dashboard Dashboard"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4 -->
+        <section class="slide" id="slide-4">
+            <div class="slide-header">
+                <h1>Project B: Strategic Calibration & Financial Validation</h1>
+            </div>
+            <div class="slide-layout-2col">
+                <div>
+                    <table class="financial-table">
+                        <thead>
+                            <tr>
+                                <th>Funnel Stage</th>
+                                <th>Conversion Target</th>
+                                <th>Monthly Intake Target</th>
+                                <th>Est. Monthly Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Paid Second Opinion</strong></td>
+                                <td>Fractional Capture</td>
+                                <td>20 Patients</td>
+                                <td>₹1,00,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tertiary Conversions</strong></td>
+                                <td>10% Downstream Rate</td>
+                                <td>2 Patients</td>
+                                <td>₹8,00,000</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td>TOTAL MONTHLY PIPELINE</td>
+                                <td>Targeted Pilot Baseline</td>
+                                <td>22 Patients</td>
+                                <td>₹9,00,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="multiplier-card">
+                        <h4>The Underutilized Asset Multiplier</h4>
+                        <p>The Consensus Board functions as a capital-light intake vehicle. Each single converted inpatient efficiently maximizes existing asset capacity, filling <strong>25–30 LINAC treatment slots</strong> and surgical OTs at zero incremental client acquisition cost.</p>
+                    </div>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="slide-image-wrapper"><img src="./image_8dbf3b.png" alt="Consensus Board Search Traffic Case"></div>
+                    <div class="slide-image-wrapper"><img src="./image_8dbef5.png" alt="Digital Gateway Integration"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5 -->
+        <section class="slide" id="slide-5">
+            <div class="slide-header">
+                <h1>Strategic Institutional Value Delivered</h1>
+            </div>
+            <div class="slide-layout-2col" style="align-items: start; height: calc(100% - 150px);">
+                <div>
+                    <h3 style="color: var(--nh-blue); margin-bottom: 15px; font-size: 1.3rem;">Project A: Operational Efficiency Outcomes</h3>
+                    <ul class="content-list">
+                        <li>Transitioned system to a 100% touchless, automated internal request routing network.</li>
+                        <li>Eliminated manual helpdesk labor constraints and minimized verbal communication leakage.</li>
+                        <li>Deployed a dynamic business intelligence layer for micro-tracking fulfillment velocities.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: var(--nh-blue); margin-bottom: 15px; font-size: 1.3rem;">Project B: Revenue Pipeline Outcomes</h3>
+                    <ul class="content-list">
+                        <li>Productized existing multidisciplinary expertise into an accessible, market-facing offering.</li>
+                        <li>Constructed a highly structured, frictionless digital intake gateway for high-acuity cases.</li>
+                        <li>Created a reliable, predictable case-acquisition vehicle to optimize long-term inpatient bed occupancy.</li>
+                    </ul>
+                </div>
+                <div class="summary-banner">
+                    <p>Core Achievement: Unlocked hidden operational capacity and maximized revenue potential by <strong>optimizing our existing infrastructure and clinical assets</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- SPEAKER NOTES DATA STORAGE -->
+    <div class="speaker-drawer" id="speakerNotesDrawer">
+        <h4>Director Pitch Prompts (P&L Focus):</h4>
+        <p id="notesContent">Loading talking points...</p>
+    </div>
+
+    <!-- FIXED CONTROLS PANEL -->
+    <div class="controls-bar">
+        <button class="speaker-notes-toggle" onclick="toggleNotes()">📋 Toggle Speaker Notes</button>
+        <div class="slide-number" id="slideIndicator">Slide 1 / 5</div>
+        <div class="nav-buttons">
+            <button onclick="prevSlide()">◀ Back</button>
+            <button onclick="nextSlide()">Next ▶</button>
+        </div>
+    </div>
+
+    <script>
+        // Full Presenter Scripts mapped to each slide index
+        const speakerScripts = [
+            "Good morning, Director. Today, I am presenting the completed operational outcomes of my internship at MMI Narayana Hospital. The overarching mandate of my work was to identify hidden operational friction points that limit our efficiency and capacity, and reconfigure them to support the hospital's operational and financial performance. As displayed on the roadmap, this was achieved through two strategic tracks: Project A focuses on eliminating internal support bottlenecks to optimize our cost-to-serve, while Project B establishes a formalized digital intake pathway to capture complex cases and naturally drive high-margin inpatient volume.",
+            "In auditing our inpatient department support loop, we found that although patients initiated requests via a WhatsApp chatbot, a manual dispatcher was still required to read each ticket and make phone calls to deploy housekeeping, F&B, or maintenance teams. This manual intermediary caused significant service delays during peak hours and provided zero data visibility. In business terms, slow support communication directly translates to delayed room turnarounds and underutilized labor—silently inflating our baseline cost-to-serve without generating any tracking metrics.",
+            "To resolve this throughput constraint, I reconfigured the backend architecture using server-side scripting to bypass the dispatch desk entirely. Tickets are now routed instantly to the mobile devices of on-duty floor staff based on pre-mapped categories. Because this occurs in the system background, it required zero interface modifications or retraining costs for floor teams. By capturing automated timestamps, we established a live operational dashboard to isolate service delays, minimize labor waste, and accelerate bed turnover metrics to actively protect our inpatient margin.",
+            "Shifting from internal efficiency to strategic revenue growth, Project B addresses our high-acuity specialty pipelines, such as oncology. To ensure operational feasibility, I have structured a highly conservative, risk-adjusted financial model for the initial regional rollout, scaling down assumptions to a baseline of just 20 paid second-opinion patients per month. At a basic board fee, this generates a predictable stream of direct outpatient revenue. The true P&L impact, however, lies in the downstream conversion. Applying a highly realistic 10% conversion rate means just 2 complex cases transition into full inpatient admissions per month, driving an estimated ₹8,00,000 in high-margin tertiary revenue. As shown in the asset multiplier callout, these complex cases act as an anchor—filling underutilized surgical OTs and maximizing clinical capacity across 25 to 30 LINAC radiation slots per patient without requiring any additional marketing acquisition spend.",
+            "In conclusion, the outcomes of this project demonstrate that we can drive significant bottom-line results through intelligent process reconfiguration alone. Project A has successfully stripped out manual administrative waste, accelerating our internal support velocity and bed readiness to optimize our cost-to-serve by maximizing our existing CRM platform. Concurrently, Project B has established a scalable, market-tested framework to capture complex cases and fill our inpatient beds, driving high-margin revenue by better utilizing clinical assets we already have on the payroll. Ultimately, both initiatives prove that optimizing our current workflow is a highly resource-efficient strategy to strengthen the hospital's operational capacity and protect our long-term P&L. Thank you, and I would be glad to take any questions or hear your guidance."
+        ];
+
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicator = document.getElementById('slideIndicator');
+        const notesContent = document.getElementById('notesContent');
+        const drawer = document.getElementById('speakerNotesDrawer');
+
+        function updateSlideDisplay() {
+            slides.forEach((slide, idx) => {
+                if(idx === currentSlideIndex) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            indicator.innerText = `Slide ${currentSlideIndex + 1} / ${slides.length}`;
+            notesContent.innerText = speakerScripts[currentSlideIndex];
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                updateSlideDisplay();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                updateSlideDisplay();
+            }
+        }
+
+        function toggleNotes() {
+            drawer.classList.toggle('open');
+        }
+
+        // Global Keyboard Event Listeners for seamless presenting
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize display on startup
+        updateSlideDisplay();
+    </script>
+</body>
+</html>
