@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Patient Journey Simulation</title>
+    <style>
+        :root {
+            --primary: #003366;
+            --accent: #00AEEF;
+            --success: #25D366;
+            --alert: #ef4444;
+            --bg-light: #f8fafc;
+            --text-dark: #0f172a;
+            --chat-bg: #efeae2;
+            --bot-msg: #ffffff;
+            --user-msg: #dcf8c6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Top Header Navigation */
+        .header {
+            background-color: #ffffff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .toggle-container {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .toggle-btn {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* Main Split Screen Area */
+        .simulation-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            background: #e2e8f0;
+        }
+
+        .panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .panel-left {
+            background-color: #f1f5f9;
+            border-right: 3px solid #cbd5e1;
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+
+        .panel-right {
+            background-color: #cbd5e1;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 80px;
+        }
+
+        .panel-title {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .panel-left .panel-title { background-color: var(--alert); }
+        .panel-right .panel-title { background-color: var(--success); }
+
+        /* Legacy Journey UI (Left) */
+        .legacy-step {
+            background: white;
+            border-left: 5px solid var(--alert);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .legacy-step.active { display: block; }
+        .legacy-step h3 { margin-bottom: 0.5rem; color: var(--primary); }
+        .legacy-step p { margin-bottom: 0.5rem; color: #334155; line-height: 1.5; }
+        
+        .time-loss {
+            color: var(--alert);
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-top: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #fef2f2;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Smartphone UI Wrapper (Right) */
+        .phone-wrapper {
+            width: 380px;
+            height: 100%;
+            max-height: 700px;
+            background: var(--chat-bg);
+            border-radius: 30px;
+            border: 12px solid #ffffff;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* WhatsApp Header */
+        .wa-header {
+            background: #075e54;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+        .wa-avatar {
+            width: 35px;
+            height: 35px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #075e54;
+            font-size: 1.2rem;
+        }
+        .wa-info { display: flex; flex-direction: column; }
+        .wa-name { font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+        .wa-status { font-size: 0.75rem; opacity: 0.9; font-weight: normal; }
+        .green-tick { color: #25D366; background: white; border-radius: 50%; width: 12px; height: 12px; display: inline-flex; justify-content: center; align-items: center; font-size: 8px;}
+
+        /* WhatsApp Chat Area */
+        .chat-container {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+            background-size: cover;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+            position: relative;
+            color: #000000;
+        }
+
+        .message.active { display: block; }
+
+        .bot-msg {
+            background-color: var(--bot-msg);
+            align-self: flex-start;
+            border-top-left-radius: 0;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+
+        .user-msg {
+            background-color: var(--user-msg);
+            align-self: flex-end;
+            border-top-right-radius: 0;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+
+        .attachment {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 0.5rem;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+            color: #0284c7;
+            cursor: pointer;
+        }
+
+        .timestamp {
+            font-size: 0.65rem;
+            color: #64748b;
+            text-align: right;
+            margin-top: 3px;
+            margin-left: 10px;
+            float: right;
+        }
+
+        /* Typing Indicator */
+        .typing {
+            background-color: var(--bot-msg);
+            align-self: flex-start;
+            border-top-left-radius: 0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            margin-bottom: 0.5rem;
+        }
+        .typing span {
+            width: 6px;
+            height: 6px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: blink 1.4s infinite both;
+        }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        /* WhatsApp Footer */
+        .wa-footer {
+            background: #f0f0f0;
+            padding: 0.75rem;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .wa-input {
+            flex: 1;
+            background: white;
+            padding: 0.6rem 1rem;
+            border-radius: 20px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
+        .wa-mic {
+            width: 40px;
+            height: 40px;
+            background: #00a884;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Bottom Control Bar */
+        .controls {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #ffffff;
+            padding: 1rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .step-indicator {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .action-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 174, 239, 0.3);
+        }
+
+        .action-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+        .action-btn:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes blink {
+            0% { opacity: 0.2; }
+            20% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🏥 Patient Journey Simulation Matrix</h1>
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btn-opd" onclick="switchMode('OPD')">OPD (Outpatient)</button>
+            <button class="toggle-btn" id="btn-ipd" onclick="switchMode('IPD')">IPD (Inpatient)</button>
+        </div>
+    </div>
+
+    <div class="simulation-container">
+        
+        <div class="panel panel-left">
+            <div class="panel-title">Current Journey (High Friction)</div>
+            <div id="legacy-content">
+                </div>
+        </div>
+
+        <div class="panel panel-right">
+            <div class="panel-title" style="margin-bottom: 0.5rem; width: 380px;">WhatsApp Gateway (Zero Friction)</div>
+            
+            <div class="phone-wrapper">
+                <div class="wa-header">
+                    <div class="wa-avatar">NH</div>
+                    <div class="wa-info">
+                        <div class="wa-name">Narayana Health <span class="green-tick">✔</span></div>
+                        <div class="wa-status">Official Business Account</div>
+                    </div>
+                </div>
+                
+                <div class="chat-container" id="whatsapp-content">
+                    </div>
+                
+                <div class="wa-footer">
+                    <div class="wa-input">Message...</div>
+                    <div class="wa-mic">🎤</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <div class="step-indicator" id="step-title">Phase 1: Patient Enquiry</div>
+        <button class="action-btn" id="next-btn" onclick="nextStep()">Simulate Next Step &rarr;</button>
+    </div>
+
+    <script>
+        // Data Structures for the Simulation
+        const scenarios = {
+            'OPD': [
+                {
+                    title: "Phase 1: General Patient Enquiry",
+                    legacy: `
+                        <h3>Routine Information Request</h3>
+                        <p>Patient needs to know if the Orthopedic doctor is available today.</p>
+                        <p>Patient calls the hospital PRM line. The line is engaged.</p>
+                        <p>Patient waits on hold listening to automated music before speaking to a busy receptionist.</p>
+                        <div class="time-loss">⏳ Time Wasted: 8 Minutes</div>
+                        <div class="time-loss">📉 Impact: Frustration; Receptionist bandwidth wasted on routine query.</div>
+                    `,
+                    whatsapp: [
+                        { type: 'user', text: "Is Dr. Sahu available today?" },
+                        { type: 'bot', text: "Hello! Dr. Akhilesh Sahu (Orthopedics) is available today from 10:00 AM to 02:00 PM." },
+                        { type: 'bot', text: "Would you like to book a slot for today?\n\nReply *1* for Yes\nReply *2* for No" }
+                    ]
+                },
+                {
+                    title: "Phase 2: Booking & Registration",
+                    legacy: `
+                        <h3>Attempting to Book Appointment</h3>
+                        <p>Patient is told to download the NHCARE App to book.</p>
+                        <p>Patient struggles with OTP, forgets password, or abandons the complex app interface.</p>
+                        <p>Patient decides to just "walk-in" instead.</p>
+                        <div class="time-loss">⏳ Time Wasted: 15 Minutes</div>
+                        <div class="time-loss">📉 Impact: Loss of scheduled predictability; walk-in surge created.</div>
+                    `,
+                    whatsapp: [
+                        { type: 'user', text: "1" },
+                        { type: 'bot', text: "Great! Your appointment with Dr. Sahu is confirmed for 11:30 AM today." },
+                        { type: 'bot', text: "Please show this WhatsApp message at the front desk when you arrive." }
+                    ]
+                },
+                {
+                    title: "Phase 3: Arrival & Payment",
+                    legacy: `
+                        <h3>Physical Check-in</h3>
+                        <p>Patient arrives and joins a long manual billing queue to pay the consultation fee.</p>
+                        <p>Staff manually enters details into the HIS system.</p>
+                        <div class="time-loss">⏳ Wait Time: 25 Minutes</div>
+                        <div class="time-loss">📉 Impact: Crowded lobby, high patient anxiety.</div>
+                    `,
+                    whatsapp: [
+                        { type: 'bot', text: "We noticed you have arrived at the hospital. Tap below to pay your ₹800 consultation fee securely and skip the desk line." },
+                        { type: 'user', text: "✅ Payment Completed via UPI" },
+                        { type: 'bot', text: "Payment received! Your Queue Token is #42. Please proceed directly to Cabin 4 on the 1st Floor." }
+                    ]
+                },
+                {
+                    title: "Phase 4: Diagnostic Lab Results",
+                    legacy: `
+                        <h3>Waiting for Reports</h3>
+                        <p>Patient gives a blood sample.</p>
+                        <p>Told to "wait in the lobby for 3 hours" or "come back tomorrow for a physical printout."</p>
+                        <p>Patient repeatedly asks the front desk: "Is my report ready yet?"</p>
+                        <div class="time-loss">⏳ Wait Time: 3+ Hours</div>
+                        <div class="time-loss">📉 Impact: Lobby congestion; Staff repeatedly interrupted.</div>
+                    `,
+                    whatsapp: [
+                        { type: 'bot', text: "Hello! Your biochemistry lab results have been authorized by the pathologist. You do not need to wait at the hospital." },
+                        { type: 'bot', text: "<div class='attachment'>📄 Biochemistry_Report.pdf</div>Reply *FWD* to send this directly to Dr. Sahu's system." }
+                    ]
+                },
+                {
+                    title: "Phase 5: Surgical Bill Estimation",
+                    legacy: `
+                        <h3>Procedure Inquiry</h3>
+                        <p>Doctor recommends surgery. Patient is sent to the Admission/TPA desk.</p>
+                        <p>Patient waits in a separate room for a coordinator to physically calculate the estimate.</p>
+                        <div class="time-loss">⏳ Wait Time: 45 Minutes</div>
+                        <div class="time-loss">📉 Impact: Patient leaves due to fatigue; potential revenue leak.</div>
+                    `,
+                    whatsapp: [
+                        { type: 'user', text: "Can I get an estimate for the ACL Surgery?" },
+                        { type: 'bot', text: "Retrieving standard estimate based on your diagnosis..." },
+                        { type: 'bot', text: "<div class='attachment'>📊 Estimated_Bill_Summary.pdf</div>Total Estimated Out-of-Pocket: ₹65,000. \n\nReply *FINANCE* to speak with a TPA coordinator instantly." }
+                    ]
+                }
+            ],
+            'IPD': [
+                {
+                    title: "Phase 1: Admission Routing",
+                    legacy: `
+                        <h3>Bed Allocation & Orientation</h3>
+                        <p>Patient is admitted to the ward.</p>
+                        <p>Nurses have to spend 15 minutes verbally explaining how to order food, call for cleaning, and ask for help.</p>
+                        <div class="time-loss">⏳ Nurse Time Lost: 15 Minutes per patient</div>
+                    `,
+                    whatsapp: [
+                        { type: 'user', text: "[Scans Ward QR Code] IP_START" },
+                        { type: 'bot', text: "Welcome to Ward 4, Bed 12. I am your Digital IP Assistant." },
+                        { type: 'bot', text: "Use me to order food, request housekeeping, or check your running bill without pressing the call bell!" }
+                    ]
+                },
+                {
+                    title: "Phase 2: In-Ward Non-Clinical Requests",
+                    legacy: `
+                        <h3>Room Cleaning Request</h3>
+                        <p>Patient hits the physical call bell.</p>
+                        <p>A clinical nurse stops medical work, walks in, takes the request, walks to desk, and calls housekeeping.</p>
+                        <div class="time-loss">⏳ Process Time: 20 Minutes</div>
+                        <div class="time-loss">📉 Impact: Clinical nurse bandwidth wasted on non-clinical tasks.</div>
+                    `,
+                    whatsapp: [
+                        { type: 'user', text: "I need my room cleaned, water spilled." },
+                        { type: 'bot', text: "Request logged. A notification has been sent directly to the Floor Housekeeping Supervisor. ETA: 5 Minutes." },
+                        { type: 'bot', text: "✅ Housekeeping has accepted your request and is on the way." }
+                    ]
+                },
+                {
+                    title: "Phase 3: Discharge & Final Billing",
+                    legacy: `
+                        <h3>The Final Wait</h3>
+                        <p>Doctor approves discharge at 10:00 AM.</p>
+                        <p>Patient sits in bed until 3:00 PM continuously asking nurses for final bill and pharmacy clearance status.</p>
+                        <div class="time-loss">⏳ Bed Blocked: 5 Hours</div>
+                        <div class="time-loss">📉 Impact: New admissions delayed. Hospital loses IPD capacity.</div>
+                    `,
+                    whatsapp: [
+                        { type: 'bot', text: "Discharge Initiated. Track your real-time status below:\n\n✅ Doctor Clearance\n✅ Pharmacy Clearance\n⏳ TPA/Insurance Final Approval" },
+                        { type: 'bot', text: "Your final outstanding bill is ₹4,200. \n<div class='attachment'>💳 Click here to Pay Securely via UPI/Card</div>" },
+                        { type: 'bot', text: "Payment confirmed. You may proceed to the exit lounge. Thank you for choosing Narayana Health!" }
+                    ]
+                }
+            ]
+        };
+
+        let currentMode = 'OPD';
+        let currentStep = 0;
+
+        const legacyBox = document.getElementById('legacy-content');
+        const whatsappBox = document.getElementById('whatsapp-content');
+        const stepTitle = document.getElementById('step-title');
+        const nextBtn = document.getElementById('next-btn');
+
+        function switchMode(mode) {
+            currentMode = mode;
+            currentStep = 0;
+            
+            document.getElementById('btn-opd').classList.toggle('active', mode === 'OPD');
+            document.getElementById('btn-ipd').classList.toggle('active', mode === 'IPD');
+            
+            legacyBox.innerHTML = '';
+            whatsappBox.innerHTML = '';
+            nextBtn.disabled = false;
+            nextBtn.innerHTML = "Start Simulation &rarr;";
+            stepTitle.innerHTML = `Ready to simulate ${mode} journey...`;
+        }
+
+        function getTimeStamp() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Helper to show typing indicator
+        async function showTyping() {
+            const typingEl = document.createElement('div');
+            typingEl.className = 'typing';
+            typingEl.id = 'typing-indicator';
+            typingEl.innerHTML = '<span></span><span></span><span></span>';
+            whatsappBox.appendChild(typingEl);
+            whatsappBox.scrollTop = whatsappBox.scrollHeight;
+            await new Promise(r => setTimeout(r, 900)); // 0.9s typing delay
+            typingEl.remove();
+        }
+
+        async function nextStep() {
+            const data = scenarios[currentMode];
+            
+            if (currentStep >= data.length) {
+                return; // End of simulation
+            }
+
+            // Update UI for next step
+            nextBtn.innerHTML = "Simulate Next Step &rarr;";
+            const stepData = data[currentStep];
+            stepTitle.innerHTML = stepData.title;
+
+            // 1. Render Legacy (Immediate)
+            const legacyEl = document.createElement('div');
+            legacyEl.className = 'legacy-step active';
+            legacyEl.innerHTML = stepData.legacy;
+            legacyBox.appendChild(legacyEl);
+            legacyBox.scrollTop = legacyBox.scrollHeight;
+
+            // 2. Render WhatsApp (Simulate Typing/API Delay)
+            nextBtn.disabled = true; // Lock button during animation
+            
+            // Add a visual separator if not the first step
+            if(currentStep > 0) {
+                const divider = document.createElement('div');
+                divider.style.textAlign = "center";
+                divider.style.margin = "15px 0";
+                divider.style.fontSize = "0.75rem";
+                divider.style.fontWeight = "bold";
+                divider.style.color = "#94a3b8";
+                divider.innerHTML = `TODAY`;
+                whatsappBox.appendChild(divider);
+            }
+
+            for (let i = 0; i < stepData.whatsapp.length; i++) {
+                const msgData = stepData.whatsapp[i];
+                
+                if (msgData.type === 'bot') {
+                    await showTyping();
+                } else {
+                    await new Promise(r => setTimeout(r, 600)); // Small delay for user msg
+                }
+
+                const msgEl = document.createElement('div');
+                msgEl.className = `message active ${msgData.type === 'bot' ? 'bot-msg' : 'user-msg'}`;
+                msgEl.innerHTML = msgData.text + `<span class="timestamp">${getTimeStamp()}</span>`;
+                whatsappBox.appendChild(msgEl);
+                whatsappBox.scrollTop = whatsappBox.scrollHeight;
+            }
+
+            currentStep++;
+            nextBtn.disabled = false;
+
+            if (currentStep >= data.length) {
+                nextBtn.innerHTML = "Journey Complete 🏁";
+                nextBtn.disabled = true;
+            }
+        }
+
+        // Initialize empty state
+        switchMode('OPD');
+
+    </script>
+</body>
+</html>
