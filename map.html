@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Interactive Map</title>
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --bg-gray: #f4f7f6;
+            --emergency-red: #d9534f;
+            --pharmacy-green: #5cb85c;
+            --white: #ffffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-gray);
+            overflow: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            height: 100vh;
+        }
+
+        /* Sidebar Info */
+        .sidebar {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Map Area */
+        .map-wrapper {
+            position: relative;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floor-plan {
+            width: 80%;
+            height: 80%;
+            background: white;
+            border: 5px solid #333;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .room {
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.2s;
+            text-align: center;
+        }
+
+        .room:hover {
+            transform: scale(1.02);
+            background-color: #ddd;
+        }
+
+        /* Room Types */
+        .emergency { background-color: var(--emergency-red); color: white; }
+        .pharmacy { background-color: var(--pharmacy-green); color: white; }
+        .opd { background-color: #f0ad4e; }
+        .radiology { background-color: #5bc0de; color: white; }
+
+        #display-info {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="sidebar">
+        <h1>Narayana Health</h1>
+        <h3>Floor 1 Directory</h3>
+        <p>Click a room on the map to see details.</p>
+        <div id="display-info">Select a department to navigate.</div>
+    </div>
+    <div class="map-wrapper">
+        <div class="floor-plan">
+            <div class="room emergency" onclick="showInfo('Emergency Wing', '24/7 Access. Turn left at the main entrance.')">Emergency (24/7)</div>
+            <div class="room opd" onclick="showInfo('OPD Block A', 'Consultation rooms 1-10. Follow the blue signs.')">OPD Block A</div>
+            <div class="room" onclick="showInfo('Waiting Lounge', 'Seating available with water dispensers.')">Waiting Lounge</div>
+            <div class="room pharmacy" onclick="showInfo('Pharmacy', 'Ground floor near main exit.')">Pharmacy</div>
+            <div class="room radiology" onclick="showInfo('Radiology/X-Ray', 'Located next to OPD Block A.')">Radiology</div>
+            <div class="room" style="grid-column: span 2;" onclick="showInfo('Main Reception', 'You are here.')">YOU ARE HERE</div>
+            <div class="room opd" onclick="showInfo('OPD Block B', 'Consultation rooms 11-20.')">OPD Block B</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showInfo(roomName, direction) {
+        document.getElementById('display-info').innerHTML = 
+            `<strong>${roomName}</strong><br><br>${direction}`;
+    }
+</script>
+
+</body>
+</html>
