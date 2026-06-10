@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPD WhatsApp Integration Proposal - Presentation Deck</title>
+    <style>
+        :root {
+            --primary: #003366;
+            --accent: #00AEEF;
+            --accent-hover: #008ecc;
+            --success: #10b981;
+            --alert: #ef4444;
+            --background: #0f172a;
+            --surface: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        /* Hard Reset to prevent browser defaults from breaking layout */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--background);
+            color: var(--text-main);
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        /* Centered Presentation Canvas */
+        .presentation-stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 92vw;
+            height: 85vh;
+            max-width: 1600px;
+            max-height: 900px;
+            background-color: #f8fafc;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+        }
+
+        .slide-stage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 4rem 5rem;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8fafc;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        /* Top Accent Decorative Line */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        }
+
+        /* Typography & Structure */
+        .slide-header {
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--accent);
+            padding-left: 1.25rem;
+        }
+
+        .slide-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 800;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Visual Layout Components */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.75rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .card.highlight { border-top: 4px solid var(--accent); }
+        .card.alert { border-top: 4px solid var(--alert); background-color: #fff5f5; }
+        .card.success { border-top: 4px solid var(--success); background-color: #f0fdf4; }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+
+        .card-meta {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        /* Bullet Formatting */
+        ul.styled-list { list-style: none; padding: 0; margin: 0; }
+        ul.styled-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.65rem;
+            line-height: 1.5;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+        ul.styled-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Presentation Data Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--primary);
+            color: var(--surface);
+            text-align: left;
+            padding: 1.1rem 1.25rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .data-table td {
+            padding: 1.1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:nth-child(even) { background-color: #f8fafc; }
+
+        /* Metrics Display */
+        .metric-group {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value { font-size: 3.25rem; font-weight: 800; color: var(--primary); line-height: 1; }
+        .metric-label { font-size: 0.95rem; color: var(--text-light); font-weight: 500; }
+
+        /* Title Slide Layout Customizations */
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            max-width: 85%;
+        }
+
+        .title-slide h1 {
+            font-size: 3.75rem;
+            color: var(--primary);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+
+        .title-slide h1 span { color: var(--accent); }
+        .title-slide p { font-size: 1.4rem; color: var(--text-light); margin-bottom: 3rem; line-height: 1.5; }
+
+        .meta-info {
+            display: flex;
+            gap: 3rem;
+            border-top: 2px solid var(--border);
+            padding-top: 1.5rem;
+        }
+        .meta-item { display: flex; flex-direction: column; }
+        .meta-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+        .meta-value { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+
+        /* BIG ZERO Slide Layout */
+        .zero-slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .big-zero {
+            font-size: 20rem;
+            font-weight: 900;
+            color: var(--accent);
+            line-height: 1;
+            text-shadow: 0 10px 30px rgba(0, 174, 239, 0.2);
+            margin-bottom: 1rem;
+        }
+        
+        .big-zero-currency {
+            font-size: 8rem;
+            vertical-align: super;
+            color: var(--primary);
+        }
+
+        .zero-subtitle {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .zero-description {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+        }
+
+        /* Chat/Code Block Styling for Flow Slide */
+        .chat-block {
+            background: #f1f5f9;
+            padding: 1.25rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--primary);
+        }
+
+        /* PERSISTENT FLOATING CONTROLS OVERLAY */
+        .nav-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 55px;
+            height: 55px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.2s ease;
+            font-size: 1.5rem;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .nav-arrow:hover {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 174, 239, 0.4);
+        }
+
+        #nav-left { left: 1.5vw; }
+        #nav-right { right: 1.5vw; }
+
+        /* HUD Slide Counter and Progress */
+        .hud-counter {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.5rem 1.25rem;
+            border-radius: 20px;
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 2000;
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 11.11%; /* 100 / 9 slides */
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        p { line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <div class="nav-arrow" id="nav-left">&larr;</div>
+    <div class="nav-arrow" id="nav-right">&rarr;</div>
+    
+    <div class="hud-counter">Slide <span id="hud-current">1</span> of 9</div>
+
+    <div class="presentation-stage">
+        <div class="slide-stage">
+
+            <div class="slide active" id="slide-1">
+                <div class="title-slide">
+                    <div class="slide-tag">Strategic Operational Optimization</div>
+                    <h1>Frictionless OPD Access:<br>Deploying Outpatient <span>WhatsApp Bot Architecture</span></h1>
+                    <p>Meeting demographic realities to reduce front-desk queues, minimize appointment no-shows, and secure leaking outpatient revenues.</p>
+                    <div class="meta-info">
+                        <div class="meta-item">
+                            <span class="meta-label">Target Area</span>
+                            <span class="meta-value">Outpatient Flows &amp; Billing (OPD)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Financial Focus</span>
+                            <span class="meta-value">Cost Reduction &amp; Leakage Mitigation</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Infrastructure Basis</span>
+                            <span class="meta-value">Existing Verified WABA Pipeline</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-2">
+                <div class="slide-header">
+                    <div class="slide-tag">Operational Breakdown</div>
+                    <div class="slide-title">Demographic Friction vs. Low Native App Adoption</div>
+                </div>
+                <div class="slide-content">
+                    <div class="grid-2">
+                        <div class="card alert">
+                            <div class="card-title">The "App Fatigue" Barrier</div>
+                            <p style="margin-bottom: 0.75rem; color: var(--text-main); font-size: 0.95rem;">Our current app requires steps that alienate our primary patient profiles:</p>
+                            <ul class="styled-list">
+                                <li><strong>UX Roadblocks:</strong> Play Store navigation, password setups, and profile registration create heavy friction.</li>
+                                <li><strong>Demographic Realities:</strong> The majority base consists of older and less tech-literate patients who struggle with standalone app environments.</li>
+                                <li><strong>Asset Underutilization:</strong> High installation drop-off renders the current system ineffective for large-scale transaction management.</li>
+                            </ul>
+                        </div>
+                        <div class="card highlight">
+                            <div class="card-title">The Downstream Cost Leaks</div>
+                            <p style="margin-bottom: 0.75rem; color: var(--text-main); font-size: 0.95rem;">Because digital adoption is stalled, traditional bottlenecks persist:</p>
+                            <ul class="styled-list">
+                                <li><strong>Unpredictable Walk-ins:</strong> Leads to highly volatile morning surges and prolonged patient turnaround times (TAT).</li>
+                                <li><strong>High Manual Tracking Costs:</strong> Floor staff lose hours manually addressing routine queries ("Are lab reports ready?", "What is my bill?").</li>
+                                <li><strong>Consultation Vacancy:</strong> High appointment drop-offs go unrecovered without quick, accessible re-engagement loops.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-3">
+                <div class="slide-header">
+                    <div class="slide-tag">Market Validation</div>
+                    <div class="slide-title">Tier-1 Hospital Groups: Shifting Gateways to WhatsApp</div>
+                </div>
+                <div class="slide-content">
+                    <p style="margin-bottom: 1.5rem; color: var(--text-main); font-size: 1rem;">Direct tier-1 competitors have already phased out passive, app-only digital gateways in favor of active chat environments:</p>
+                    <div class="grid-3">
+                        <div class="card highlight">
+                            <div class="card-meta">Manipal Hospitals</div>
+                            <div class="card-title" style="font-size: 1.15rem;">The "MAI" Companion</div>
+                            <p style="color: var(--text-light); font-size: 0.9rem; line-height: 1.4;">Bypassed manual reception blocks with an automated assistant. Patients schedule consults and retrieve diagnostic reports directly within chat fields.</p>
+                        </div>
+                        <div class="card highlight">
+                            <div class="card-meta">Max Healthcare</div>
+                            <div class="card-title" style="font-size: 1.15rem;">18% Inbound Deflection</div>
+                            <p style="color: var(--text-light); font-size: 0.9rem; line-height: 1.4;">Mapped bot endpoints with backend database tools. Reduced routine customer care calls by 18% while optimizing local lab order intake.</p>
+                        </div>
+                        <div class="card highlight">
+                            <div class="card-meta">Aster DM Healthcare</div>
+                            <div class="card-title" style="font-size: 1.15rem;">95% Query Automation</div>
+                            <p style="color: var(--text-light); font-size: 0.9rem; line-height: 1.4;">Automated the delivery of standard info fields (timings, specialist availability). Freed front-desk teams to accelerate billing workflows.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-4">
+                <div class="slide-header">
+                    <div class="slide-tag">Enterprise Precedent</div>
+                    <div class="slide-title">Cross-Industry Validation: The IndiGo Parallel</div>
+                </div>
+                <div class="slide-content">
+                    <div class="grid-2">
+                        <div class="card" style="border-left: 4px solid var(--primary);">
+                            <div class="card-meta">The Travel &amp; Booking Analogy</div>
+                            <p style="color: var(--text-main); font-size: 1rem; line-height: 1.5; margin-bottom: 1rem;">Airlines manage identical operational constraints as high-volume care centers: real-time asset allocations, financial estimates, and immediate document dispatch.</p>
+                            <p style="color: var(--text-main); font-size: 1rem; line-height: 1.5; margin-bottom: 0;"><strong>IndiGo's Pivot:</strong> Launched <strong>6Eskai on WhatsApp</strong>—allowing clients to execute full seat matrices, processing payments, and check-ins within active chat lines.</p>
+                        </div>
+                        <div class="card success">
+                            <div class="card-title">Core Strategic Takeaway</div>
+                            <p style="color: var(--text-main); font-size: 1rem; line-height: 1.5; margin-bottom: 1rem;"><strong>Do not train your audience to navigate your architecture. Move your architecture into the ecosystem they already live in.</strong></p>
+                            <ul class="styled-list">
+                                <li>WhatsApp holds absolute user saturation across target age lines.</li>
+                                <li>Aviation data confirms a 15% to 20% conversion lift when replacing complex forms with conversational apps.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-5">
+                <div class="slide-header">
+                    <div class="slide-tag">Technical Feasibility Matrix</div>
+                    <div class="slide-title">No New Contracts: Scaling Active Architecture</div>
+                </div>
+                <div class="slide-content">
+                    <div class="grid-3">
+                        <div class="card highlight">
+                            <div class="card-title">Zero Meta Contracts</div>
+                            <p style="color: var(--text-light); font-size: 0.9rem; line-height: 1.4; margin: 0;">Because our facility has already built and verified an active <strong>Inpatient IPBOT framework</strong>, Meta business verification is 100% complete. No new structural approvals or vendor additions are needed.</p>
+                        </div>
+                        <div class="card highlight">
+                            <div class="card-title">Frictionless Flow Approvals</div>
+                            <p style="color: var(--text-light); font-size: 0.9rem; line-height: 1.4; margin: 0;">Automated template triggers (e.g., appointment confirmations, lab URLs, bill estimates) require zero lengthy review. Submissions secure near-instant approval via our standard BSP dashboard layer.</p>
+                        </div>
+                        <div class="card highlight">
+                            <div class="card-title">Secure Database Mapping</div>
+                            <p style="color: var(--text-light); font-size: 0.9rem; line-height: 1.4; margin: 0;">The chat layer runs via restricted read-only webhooks hooked to our central database. This maintains complete data security without caching patient medical summaries on third-party servers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-6">
+                <div class="slide-header">
+                    <div class="slide-tag">Backend Architecture & Flow Management</div>
+                    <div class="slide-title">Preventing Traffic Collision on a Single Number</div>
+                </div>
+                <div class="slide-content">
+                    <div class="card alert" style="margin-bottom: 1.5rem; border-top: 4px solid var(--primary); background-color: #f8fafc;">
+                        <p style="margin: 0; color: var(--text-main); font-size: 1.05rem;"><strong>The Question:</strong> <em>"If we use the same WhatsApp number for both the IPBOT and the Outpatient Assistant, won't there be confusion in the backend process flow?"</em></p>
+                    </div>
+                    
+                    <div class="grid-2">
+                        <div class="card highlight" style="border-top-color: var(--success);">
+                            <div class="card-meta">Primary Solution (Tier 2)</div>
+                            <div class="card-title">Parameterized Entry Points</div>
+                            <p style="color: var(--text-light); font-size: 0.95rem; line-height: 1.4; margin-bottom: 1rem;">Patients don't just type "Hi". We provide specific QR codes that contain "pre-filled" hidden text commands.</p>
+                            <ul class="styled-list">
+                                <li><strong>In the Inpatient Wards:</strong> The QR code taped to the bed table generates a hidden message like <code>IP_START</code>. The backend instantly launches the inpatient food/services menu.</li>
+                                <li><strong>At the OPD Registration Desk:</strong> The QR code on the standee generates a hidden message like <code>OP_START</code>. The backend launches the outpatient booking menu.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="card highlight" style="border-top-color: var(--accent);">
+                            <div class="card-meta">Manual Fallback (Tier 3)</div>
+                            <div class="card-title">The Universal Triage Menu</div>
+                            <p style="color: var(--text-light); font-size: 0.95rem; line-height: 1.4; margin-bottom: 1rem;">If someone manually types the number without scanning a QR code (e.g., a relative messaging from home), the bot acts as a digital receptionist:</p>
+                            <div class="chat-block">
+                                "Welcome to Narayana Health Raipur! To assist you better, please choose an option:<br><br>
+                                <strong>Reply 1:</strong> I am currently admitted in the hospital (Inpatient Services)<br>
+                                <strong>Reply 2:</strong> I want to book an appointment or check lab results (Outpatient Services)"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slide" id="slide-7">
+                <div class="zero-slide-content">
+                    <div class="slide-tag" style="margin-bottom: 1rem;">Implementation Cost</div>
+                    <div class="big-zero"><span class="big-zero-currency">₹</span>0</div>
+                    <div class="zero-subtitle">Zero New Platform Investments</div>
+                    <p class="zero-description">We are entirely leveraging the existing verified WhatsApp Business infrastructure currently used by our Inpatient Bot. There are no new setup fees, no new Meta contracts, and zero new hardware requirements.</p>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-8">
+                <div class="slide-header">
+                    <div class="slide-tag">Financial Architecture</div>
+                    <div class="slide-title">Meta Transaction Tiers: Variable Cost Framework</div>
+                </div>
+                <div class="slide-content">
+                    <p style="margin-bottom: 1rem; color: var(--text-main); font-size: 1rem;">Meta’s conversation pricing model ensures our operational margins stay fully protected:</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Conversation Tier</th>
+                                <th>Meta Tariff (India Base)</th>
+                                <th>Operational Application (OPD Scope)</th>
+                                <th>Impact on Hospital P&amp;L</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Service Session (Inbound)</strong></td>
+                                <td><strong>Privacy Rate: ₹0.00</strong></td>
+                                <td>Patient-initiated actions (e.g., pulling lab outcomes or looking up timings). Responses inside 24 hours cost nothing.</td>
+                                <td><strong>Zero Cost</strong> for incoming organic queries.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Utility Session (Outbound)</strong></td>
+                                <td><strong>~₹0.12 - ₹0.15</strong></td>
+                                <td>Hospital-initiated alerts (e.g., transaction records, automated booking notifications, estimated procedure balances).</td>
+                                <td>Strictly variable; maps to active patient volume.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marketing Broadcasts</strong></td>
+                                <td>~₹0.86 - ₹1.09</td>
+                                <td>Discretionary broadcasts (wellness alerts, specific surgical package profiles, outstation specialist camps).</td>
+                                <td>Discretionary customer-acquisition investment.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-9">
+                <div class="slide-header">
+                    <div class="slide-tag">The Business Case</div>
+                    <div class="slide-title">Financial Deflection: Offloading Costs &amp; Self-Funding</div>
+                </div>
+                <div class="slide-content">
+                    <div class="grid-3" style="margin-bottom: 1.5rem;">
+                        <div class="card highlight">
+                            <div class="card-title">No-Show Abatement</div>
+                            <div class="metric-group">
+                                <span class="metric-value">25%</span>
+                                <span class="metric-label">Reduction</span>
+                            </div>
+                            <p style="color: var(--text-light); font-size: 0.85rem; line-height: 1.4; margin: 0;">WhatsApp carries an active 98% open rate. Frictionless confirmation choices safeguard highly valuable physician slots from empty expiration.</p>
+                        </div>
+                        <div class="card highlight">
+                            <div class="card-title">Staff Bandwidth Relief</div>
+                            <div class="metric-group">
+                                <span class="metric-value">3.5h</span>
+                                <span class="metric-label">Saved/Staff/Day</span>
+                            </div>
+                            <p style="color: var(--text-light); font-size: 0.85rem; line-height: 1.4; margin: 0;">Deflecting routine inquiry calls offloads front-desk workflows, freeing resource bandwidth to focus on physical check-ins and payments.</p>
+                        </div>
+                        <div class="card highlight">
+                            <div class="card-title">Self-Funding Equation</div>
+                            <div class="metric-group">
+                                <span class="metric-value">48h</span>
+                                <span class="metric-label">Break-Even Matrix</span>
+                            </div>
+                            <p style="color: var(--text-light); font-size: 0.85rem; line-height: 1.4; margin: 0;">An unused native app scores a flat ₹0 return. Preserving just 10–12 consultation drop-offs hospital-wide completely covers our entire monthly volume cost within 48 hours.</p>
+                        </div>
+                    </div>
+                    <div class="card success">
+                        <div class="card-title">Strategic Recommendation for the HOD</div>
+                        <p style="color: var(--text-main); font-size: 0.95rem; line-height: 1.4; margin: 0;"><strong>Authorize a low-risk, 15-day isolated trial run specifically targeting automated Lab Report pulls via our live WABA pipeline.</strong> This lets us evaluate database API performance, gauge queue relief, and prove immediate cost deflection before driving any hospital-wide strategy modifications.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentSlide = 1;
+            const totalSlides = 9; // Updated to 9 slides
+
+            const leftArrow = document.getElementById('nav-left');
+            const rightArrow = document.getElementById('nav-right');
+            const hudCurrent = document.getElementById('hud-current');
+            const progressBar = document.getElementById('progress-bar');
+            const allSlides = document.querySelectorAll('.slide');
+
+            function updatePresentation() {
+                // Cycle through active slide declarations
+                allSlides.forEach((slide, index) => {
+                    if (index + 1 === currentSlide) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+
+                // Recalibrate HUD elements
+                if(hudCurrent) hudCurrent.textContent = currentSlide;
+                
+                if(progressBar) {
+                    const progressPercentage = (currentSlide / totalSlides) * 100;
+                    progressBar.style.width = `${progressPercentage}%`;
+                }
+
+                // Graceful opacity state settings for boundary arrows
+                if(leftArrow) leftArrow.style.opacity = currentSlide === 1 ? "0.2" : "1";
+                if(rightArrow) rightArrow.style.opacity = currentSlide === totalSlides ? "0.2" : "1";
+            }
+
+            function navigate(direction) {
+                if (direction === 'next' && currentSlide < totalSlides) {
+                    currentSlide++;
+                } else if (direction === 'prev' && currentSlide > 1) {
+                    currentSlide--;
+                }
+                updatePresentation();
+            }
+
+            // Click Bindings
+            if(rightArrow) rightArrow.addEventListener('click', () => navigate('next'));
+            if(leftArrow) leftArrow.addEventListener('click', () => navigate('prev'));
+
+            // Keyboard System Bindings
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    e.preventDefault();
+                    navigate('next');
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    navigate('prev');
+                }
+            });
+
+            // Bootstrap presentation initialization status
+            updatePresentation();
+        });
+    </script>
+</body>
+</html>
