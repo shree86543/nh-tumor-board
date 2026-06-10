@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMI Narayana - Dual AI Routing Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            color: white;
+        }
+        .demo-title {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .demo-subtitle {
+            font-size: 14px;
+            color: #bdc3c7;
+            margin-top: -15px;
+            margin-bottom: 30px;
+        }
+        .split-container {
+            display: flex;
+            gap: 40px;
+            width: 100%;
+            max-width: 900px;
+            justify-content: center;
+        }
+        .phone-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .scenario-label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ecf0f1;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+        .phone-container {
+            width: 320px;
+            height: 650px;
+            background-color: #e5ddd5;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 8px solid #111;
+        }
+        .header {
+            background-color: #075e54;
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .header-avatar {
+            width: 34px;
+            height: 34px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        .chat-area {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+            background-size: cover;
+        }
+        .message {
+            max-width: 85%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        .message.bot {
+            background-color: white;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+            color: #111;
+        }
+        .message.user {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+            color: #111;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+            align-self: center;
+            width: 95%;
+        }
+        .option-btn {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 18px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            transition: transform 0.1s, background-color 0.2s;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        .option-btn:hover { background-color: #128C7E; transform: translateY(-1px); }
+        .payment-btn { background-color: #007bff; }
+        .payment-btn:hover { background-color: #0056b3; }
+        .pdf-btn { background-color: #e53935; }
+        .pdf-btn:hover { background-color: #c62828; }
+        
+        .global-controls {
+            margin-top: 30px;
+        }
+        .restart-btn {
+            background-color: #34495e;
+            color: white;
+            border: 2px solid #ecf0f1;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .restart-btn:hover { background-color: #ecf0f1; color: #2c3e50; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="demo-title">Intelligent Patient Routing: CRM Integration</div>
+    <div class="demo-subtitle">Demonstrating automated variable workflows based on phone number recognition</div>
+
+    <div class="split-container">
+        
+        <div class="phone-wrapper">
+            <div class="scenario-label">Scenario A: Recognized Number</div>
+            <div class="phone-container">
+                <div class="header">
+                    <div class="header-avatar">🏥</div>
+                    <div>
+                        MMI Narayana Hospital
+                        <div style="font-size: 11px; font-weight: normal; color: #d1f4cc; margin-top: 2px;">Verified Business Account</div>
+                    </div>
+                </div>
+                <div class="chat-area" id="chat-area-a"></div>
+            </div>
+        </div>
+
+        <div class="phone-wrapper">
+            <div class="scenario-label">Scenario B: Unrecognized Number</div>
+            <div class="phone-container">
+                <div class="header">
+                    <div class="header-avatar">🏥</div>
+                    <div>
+                        MMI Narayana Hospital
+                        <div style="font-size: 11px; font-weight: normal; color: #d1f4cc; margin-top: 2px;">Verified Business Account</div>
+                    </div>
+                </div>
+                <div class="chat-area" id="chat-area-b"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="global-controls">
+        <button class="restart-btn" onclick="startAllChats()">Restart Simulations</button>
+    </div>
+
+    <script>
+        // --- CORE UI FUNCTIONS ---
+        function scrollToBottom(areaId) {
+            const area = document.getElementById(areaId);
+            setTimeout(() => { area.scrollTop = area.scrollHeight; }, 50);
+        }
+
+        function addMessage(areaId, text, sender) {
+            const area = document.getElementById(areaId);
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${sender}`;
+            msgDiv.innerHTML = text;
+            area.appendChild(msgDiv);
+            scrollToBottom(areaId);
+        }
+
+        function showOptions(areaId, options, callback, btnClass = 'option-btn') {
+            const area = document.getElementById(areaId);
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'options-container';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = btnClass;
+                if(opt.customClass) btn.classList.add(opt.customClass);
+                btn.innerText = opt.label;
+                btn.onclick = () => {
+                    optsDiv.remove();
+                    addMessage(areaId, opt.textToSend || opt.label, 'user');
+                    setTimeout(() => callback(opt.value, opt.label), 500);
+                };
+                optsDiv.appendChild(btn);
+            });
+            area.appendChild(optsDiv);
+            scrollToBottom(areaId);
+        }
+
+        function delayBotMessage(areaId, text, delay = 800) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    addMessage(areaId, text, 'bot');
+                    resolve();
+                }, delay);
+            });
+        }
+
+        // --- INSTANCE STATE MANAGERS ---
+        // To keep the two phones independent, we pass "state" objects.
+        
+        function createInitialState(areaId, isKnown) {
+            return {
+                areaId: areaId,
+                isKnown: isKnown,
+                patientName: isKnown ? 'Rahul' : 'Guest',
+                docName: '',
+                timeLabel: '',
+                fee: ''
+            };
+        }
+
+        // --- SHARED WORKFLOW LOGIC ---
+
+        function showMainMenu(state) {
+            showOptions(state.areaId, [
+                { label: "Book Appointment 🩺", value: "appointment" },
+                { label: "Health Checkup Lounge 📋", value: "checkup" },
+                { label: "View Lab Results 🔬", value: "lab_results" }
+            ], (choice) => handleMainMenu(state, choice));
+        }
+
+        async function handleMainMenu(state, choice) {
+            if (choice === 'appointment') {
+                await delayBotMessage(state.areaId, `Let's get your appointment scheduled, ${state.patientName}. Please select a department:`);
+                showOptions(state.areaId, [
+                    { label: "Cardiology ❤️", value: "cardiology" },
+                    { label: "Oncology 🎗️", value: "oncology" },
+                    { label: "General Medicine 🩺", value: "general" }
+                ], (dept) => showDoctors(state, dept));
+            } 
+            else if (choice === 'checkup') {
+                await delayBotMessage(state.areaId, `Welcome to the **Executive Health Checkup Lounge**, ${state.patientName}. <br><br>Based on your profile, we recommend the **Executive Cardiac Screening**.<br>Total Fee: **₹2,500**`);
+                showOptions(state.areaId, [
+                    { label: "Book Home Collection 🏠", value: "home" },
+                    { label: "Book Lounge Visit 🏥", value: "hospital" }
+                ], async (location) => {
+                    if(location === 'home') {
+                        await delayBotMessage(state.areaId, `Excellent. Our phlebotomist will arrive at your home tomorrow between **7:00 AM - 8:00 AM** (Fasting required).`);
+                        state.docName = "Executive Health Checkup (Home Collection)";
+                        state.timeLabel = "Tomorrow, 7:00 AM";
+                    } else {
+                        await delayBotMessage(state.areaId, `Great. Please arrive at the Health Checkup Lounge on the 1st floor tomorrow morning on an empty stomach.`);
+                        state.docName = "Executive Health Checkup (Lounge Visit)";
+                        state.timeLabel = "Tomorrow Morning";
+                    }
+                    state.fee = "₹2,500";
+                    initiatePayment(state);
+                });
+            } 
+            else if (choice === 'lab_results') {
+                await delayBotMessage(state.areaId, "To securely fetch your results, please enter your **6-digit Lab Accession Number**.");
+                showOptions(state.areaId, [
+                    { label: "Type: 883921", textToSend: "883921", value: "883921" }
+                ], () => handleLabResultsFlow(state));
+            }
+        }
+
+        async function showDoctors(state, dept) {
+            let doctors = [];
+            if (dept === 'cardiology') {
+                await delayBotMessage(state.areaId, "Select a Cardiology specialist:");
+                doctors = [{ label: "Dr. Snehil Goswami (₹800)", value: "Dr. Snehil Goswami", fee: "₹800" }, { label: "Dr. Mohammed Wasim (₹600)", value: "Dr. Wasim Khan", fee: "₹600" }];
+            } else if (dept === 'oncology') {
+                await delayBotMessage(state.areaId, "Select an Oncology specialist:");
+                doctors = [{ label: "Dr. Devvrat Hishikar (₹800)", value: "Dr. Devvrat Hishikar", fee: "₹800" }, { label: "Dr. Akansha Chiklekar (₹600)", value: "Dr. Akansha", fee: "₹600" }];
+            } else if (dept === 'general') {
+                await delayBotMessage(state.areaId, "Select a General Medicine physician:");
+                doctors = [{ label: "Dr. Mukesh Sharma (₹500)", value: "Dr. Mukesh Sharma", fee: "₹500" }, { label: "Dr. Jaya Bajpai (₹500)", value: "Dr. Jaya Bajpai", fee: "₹500" }];
+            }
+            
+            showOptions(state.areaId, doctors.map(d => ({label: d.label, value: d.value, fee: d.fee})), (docName) => {
+                const selectedDoc = doctors.find(o => o.value === docName);
+                askTimeSlot(state, selectedDoc.value, selectedDoc.fee);
+            });
+        }
+
+        async function askTimeSlot(state, docName, fee) {
+            state.docName = docName;
+            state.fee = fee;
+            await delayBotMessage(state.areaId, `**${docName}** has slots available for tomorrow. <br><br>Consultation Fee: **${fee}**<br><br>Please select a time:`);
+            showOptions(state.areaId, [
+                { label: "10:30 AM", value: "10:30 AM" },
+                { label: "02:00 PM", value: "02:00 PM" }
+            ], async (timeLabel) => {
+                state.timeLabel = timeLabel;
+                initiatePayment(state);
+            });
+        }
+
+        async function handleLabResultsFlow(state) {
+            await delayBotMessage(state.areaId, "🔍 Fetching your results securely from the Laboratory System...");
+            await delayBotMessage(state.areaId, `📄 **Lipid Profile & HbA1c** <br>Patient: ${state.patientName}<br>Status: FINAL VALIDATED <br><br>🚨 *Note: Your LDL Cholesterol levels are elevated.*`);
+            showOptions(state.areaId, [
+                { label: "⬇️ Download PDF Report", textToSend: "Downloading PDF...", value: "download", customClass: "pdf-btn" }
+            ], async () => {
+                await delayBotMessage(state.areaId, `Since your LDL is elevated, would you like to book a quick **Tele-consultation** with Dr. Mukesh Sharma (General Med) to review these results?`);
+                showOptions(state.areaId, [
+                    { label: "Yes, Book Tele-Consult", value: "yes_consult" },
+                    { label: "No, I'm fine", value: "no_consult" }
+                ], async (choice) => {
+                    if (choice === 'yes_consult') {
+                        askTimeSlot(state, "Dr. Mukesh Sharma (Tele-Consult)", "₹500");
+                    } else {
+                        await delayBotMessage(state.areaId, "No problem. Stay healthy! 🏥");
+                    }
+                });
+            });
+        }
+
+        async function initiatePayment(state) {
+            await delayBotMessage(state.areaId, `To confirm your booking, please complete the payment of **${state.fee}**:`);
+            showOptions(state.areaId, [
+                { label: `💳 Pay ${state.fee} via UPI`, textToSend: "Payment Completed ✅", value: "paid", customClass: "payment-btn" }
+            ], () => confirmBooking(state)); 
+        }
+
+        async function confirmBooking(state) {
+            await delayBotMessage(state.areaId, `✅ **Transaction Successful!** <br><br>Your booking for **${state.docName}** is confirmed for **${state.timeLabel}**. <br><br>🚨 *Show this message at the Fast-Track counter to skip the queue.*`);
+        }
+
+        // --- PHONE A SPECIFIC (KNOWN) ---
+        async function runKnownFlow() {
+            document.getElementById('chat-area-a').innerHTML = '';
+            let stateA = createInitialState('chat-area-a', true);
+            
+            await delayBotMessage(stateA.areaId, "Patient started chat...", 200);
+            addMessage(stateA.areaId, "Hi", "user");
+
+            await delayBotMessage(stateA.areaId, "Welcome to **MMI Narayana Hospital!** 🏥");
+            // SIMULATE CRM MATCH
+            await delayBotMessage(stateA.areaId, `Welcome back, **Rahul Kumar**! (MRN: 109982) <br><br>How can we assist you today, Rahul?`, 1200);
+            
+            showMainMenu(stateA);
+        }
+
+        // --- PHONE B SPECIFIC (UNKNOWN) ---
+        async function runUnknownFlow() {
+            document.getElementById('chat-area-b').innerHTML = '';
+            let stateB = createInitialState('chat-area-b', false);
+            
+            await delayBotMessage(stateB.areaId, "Patient started chat...", 200);
+            addMessage(stateB.areaId, "Hi", "user");
+
+            await delayBotMessage(stateB.areaId, "Welcome to **MMI Narayana Hospital!** 🏥");
+            // SIMULATE NO CRM MATCH
+            await delayBotMessage(stateB.areaId, "I don't recognize this number in our system. Are you a returning patient or a completely new patient?", 1200);
+            
+            showOptions(stateB.areaId, [
+                { label: "New Patient 🙋‍♂️", value: "new" },
+                { label: "Returning Patient 🔄", value: "returning" }
+            ], (choice) => {
+                if(choice === 'new') {
+                    delayBotMessage(stateB.areaId, "Let's get you registered quickly! Please reply with your **Name, Age, and Gender** (e.g., Amit, 42, Male).").then(() => {
+                        showOptions(stateB.areaId, [
+                            { label: "Type: Amit, 42, Male", textToSend: "Amit, 42, Male", value: "Amit" }
+                        ], async (nameVal) => {
+                            stateB.patientName = nameVal;
+                            await delayBotMessage(stateB.areaId, `Profile created (MRN: T-88392). <br><br>How can we help you today, **${nameVal}**?`);
+                            showMainMenu(stateB);
+                        });
+                    });
+                } else {
+                    delayBotMessage(stateB.areaId, "Please enter your registered **Old Mobile Number** or **MRN** to pull up your profile.").then(() => {
+                        showOptions(stateB.areaId, [
+                            { label: "Type: 9876500000", textToSend: "9876500000", value: "Priya" }
+                        ], async (nameVal) => {
+                            stateB.patientName = nameVal;
+                            await delayBotMessage(stateB.areaId, `File linked! Welcome back, **Priya Sharma**. <br><br>How can we assist you today, Priya?`);
+                            showMainMenu(stateB);
+                        });
+                    });
+                }
+            });
+        }
+
+        // --- MASTER START ---
+        function startAllChats() {
+            runKnownFlow();
+            runUnknownFlow();
+        }
+
+        window.onload = startAllChats;
+    </script>
+</body>
+</html>
