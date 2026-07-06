@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMI Narayana Hospital - Strategic Operations Deck</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f3f4f6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #presentation-container {
+            width: 100vw;
+            height: 56.25vw;
+            max-height: 100vh;
+            max-width: 177.78vh;
+            background-color: white;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.35s ease-in-out;
+            padding: 3.5rem 4.5rem;
+            box-sizing: border-box;
+        }
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+        .slide-header {
+            border-bottom: 3px solid #1e40af;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.75rem;
+            flex-shrink: 0;
+        }
+        .controls {
+            position: absolute;
+            bottom: 1.25rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            z-index: 50;
+            background: rgba(255,255,255,0.85);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .btn-nav {
+            background-color: #1e40af;
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            width: 36px;
+            height: 46px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-nav:hover {
+            background-color: #1d4ed8;
+            transform: scale(1.05);
+        }
+        #slide-counter {
+            color: #374151;
+            font-weight: 700;
+            font-size: 1rem;
+            min-width: 60px;
+            text-align: center;
+        }
+        .step-pill {
+            transition: all 0.3s ease;
+        </tr>
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        
+        <div class="slide active bg-gradient-to-br from-slate-900 to-indigo-950 justify-center items-center text-center text-white">
+            <div class="w-20 w-20 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl transform rotate-3">
+                <i class="fa-solid fa-chart-line text-4xl text-white"></i>
+            </div>
+            <h1 class="text-5xl font-black mb-3 tracking-tight max-w-4xl">Optimizing Operational Throughput & Conversion Funnels</h1>
+            <h2 class="text-2xl text-blue-400 font-medium mb-8">Capital-Light Digital Interventions & Lean Architecture</h2>
+            <div class="w-32 h-1 bg-blue-500 mb-8 rounded-full"></div>
+            <p class="text-lg text-slate-300 font-semibold uppercase tracking-wider">Executive Presentation for the Facility Director</p>
+            <p class="text-sm text-slate-400 mt-1">MMI Narayana Superspeciality Hospital, Raipur</p>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-3xl font-extrabold text-slate-900">01. The Macro Challenge: Friction Costs</h2>
+                    <span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-bold uppercase rounded">P&L Threat</span>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-6 flex-1 items-center">
+                <div class="bg-slate-50 border border-slate-200 p-6 rounded-xl h-full flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4"><i class="fa-solid fa-users-slash text-xl text-red-600"></i></div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Patient Attrition</h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">App barriers and clunky form touchpoints act as a premium tax on consumer attention. High-friction booking logic causes incoming leads to abandon the pipeline at the perimeter.</p>
+                    </div>
+                    <span class="text-xs font-bold text-red-500 uppercase mt-4">Result: Lost Initial OPD Footfall</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 p-6 rounded-xl h-full flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4"><i class="fa-solid fa-hourglass-half text-xl text-orange-600"></i></div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Bandwidth Dilution</h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">Fulfillment workflows for non-clinical inpatient tasks are highly fragmented. Relying on a central desk dispatcher drags nurse focus away from specialized patient triage.</p>
+                    </div>
+                    <span class="text-xs font-bold text-orange-500 uppercase mt-4">Result: High Cost-To-Serve Matrix</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 p-6 rounded-xl h-full flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4"><i class="fa-solid fa-filter text-xl text-yellow-600"></i></div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Funnel Leakage</h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">Complex multidisciplinary case files lack a synchronous internal routing system. High-acuity cases face long coordination times, prompting high-margin treatments to slide to local competitors.</p>
+                    </div>
+                    <span class="text-xs font-bold text-yellow-600 uppercase mt-4">Result: Deflected IPD Conversion Margins</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">02. Methodological Framework: Six Sigma DMAIC</h2>
+            </div>
+            <div class="flex-1 flex flex-col justify-center">
+                <p class="text-slate-600 text-base mb-6 max-w-3xl">System overhauls require rigorous, standardized structures. Every tactical step taken during this operational study follows the structured Six Sigma **DMAIC** blueprint:</p>
+                <div class="grid grid-cols-5 gap-4">
+                    <div class="bg-blue-900 text-white p-4 rounded-xl shadow-sm text-center">
+                        <div class="text-2xl font-black mb-1 text-blue-300">D</div>
+                        <div class="text-sm font-bold uppercase tracking-wider mb-2">Define</div>
+                        <p class="text-xs text-blue-100">Isolated 'App Fatigue' and clinical bandwidth loss as baseline project concerns.</p>
+                    </div>
+                    <div class="bg-blue-800 text-white p-4 rounded-xl shadow-sm text-center">
+                        <div class="text-2xl font-black mb-1 text-blue-300">M</div>
+                        <div class="text-sm font-bold uppercase tracking-wider mb-2">Measure</div>
+                        <p class="text-xs text-blue-100">Mapped physical flows; verified average manual routing delays clocking ~7 mins.</p>
+                    </div>
+                    <div class="bg-blue-700 text-white p-4 rounded-xl shadow-sm text-center">
+                        <div class="text-2xl font-black mb-1 text-blue-300">A</div>
+                        <div class="text-sm font-bold uppercase tracking-wider mb-2">Analyze</div>
+                        <p class="text-xs text-blue-100">Conducted RCA to expose manual dispatcher nodes generating severe info decay.</p>
+                    </div>
+                    <div class="bg-blue-600 text-white p-4 rounded-xl shadow-sm text-center">
+                        <div class="text-2xl font-black mb-1 text-blue-300">I</div>
+                        <div class="text-sm font-bold uppercase tracking-wider mb-2">Improve</div>
+                        <p class="text-xs text-blue-100">Engineered a direct touchless WhatsApp layout using custom webhook listeners.</p>
+                    </div>
+                    <div class="bg-blue-500 text-white p-4 rounded-xl shadow-sm text-center">
+                        <div class="text-2xl font-black mb-1 text-blue-300">C</div>
+                        <div class="text-sm font-bold uppercase tracking-wider mb-2">Control</div>
+                        <p class="text-xs text-blue-100">Instituted transaction registries tied to Looker Studio for active SLA review.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">03. Core Diagnostic Tool: Root Cause Analysis</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-8 flex-1 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">The '5 Whys' Breakdown</h3>
+                    <p class="text-slate-600 mb-4 text-sm leading-relaxed">To optimize a system, we must diagnose the baseline problem down to its true structural failure point. Surface fixes produce short-term solutions; drilling down exposes the foundational constraint.</p>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                        <p class="text-sm font-bold text-indigo-900"><i class="fa-solid fa-circle-exclamation mr-2"></i>Foundational Discovery:</p>
+                        <p class="text-xs text-slate-600 mt-1">Leakage in high-margin oncology procedures is not caused by clinical deficits. It stems from sequential routing delays across unlinked specialist offices, creating a high-stress conversion environment.</p>
+                    </div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-center gap-3 p-2 bg-red-50 text-red-900 font-medium rounded-lg shadow-sm"><span class="bg-red-600 text-white px-2 py-0.5 rounded text-xs">1</span> Losing high-acuity cases to competitors.</div>
+                    <div class="flex items-center gap-3 p-2 bg-orange-50 text-orange-900 font-medium rounded-lg shadow-sm"><span class="bg-orange-600 text-white px-2 py-0.5 rounded text-xs">2</span> Patients leave after initial outpatient consultations.</div>
+                    <div class="flex items-center gap-3 p-2 bg-amber-50 text-amber-900 font-medium rounded-lg shadow-sm"><span class="bg-amber-600 text-white px-2 py-0.5 rounded text-xs">3</span> They become anxious waiting for treatment path execution.</div>
+                    <div class="flex items-center gap-3 p-2 bg-yellow-50 text-yellow-900 font-medium rounded-lg shadow-sm"><span class="bg-yellow-600 text-white px-2 py-0.5 rounded text-xs">4</span> The multidisciplinary care plan takes too long to solidify.</div>
+                    <div class="flex items-center gap-3 p-2 bg-green-50 text-green-900 font-medium rounded-lg shadow-sm"><span class="bg-green-600 text-white px-2 py-0.5 rounded text-xs">5</span> Clinical files are manually routed across separate offices.</div>
+                    <div class="p-3 bg-blue-900 text-white font-bold rounded-lg text-center shadow-md border-l-4 border-blue-400 text-xs uppercase tracking-wider">Root Cause: Absence of a unified digital intake layer to instantly trigger concurrent consensus.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">04. Theoretical Pillars: Goldratt & Lean Optimization</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-8 flex-1 items-center">
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-indigo-600 text-white p-2 rounded-lg"><i class="fa-solid fa-gears text-lg"></i></span>
+                            <h3 class="text-xl font-bold text-slate-800">Theory of Constraints (TOC)</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">Under Eliyahu Goldratt’s TOC framework, systemic velocity is strictly limited by the single slowest constraint within the architecture.</p>
+                        <blockquote class="border-l-4 border-indigo-600 pl-3 text-xs italic text-slate-500">"In outpatient conversion and ward requests, the system constraint was the human intermediary. Processing tickets sequentially through a manual helpdesk operator capped total network capacity."</blockquote>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-600 tracking-wide uppercase mt-4">Action: Elevate constraint via programmatic routing.</span>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-emerald-600 text-white p-2 rounded-lg"><i class="fa-solid fa-recycle text-lg"></i></span>
+                            <h3 class="text-xl font-bold text-slate-800">Lean Waste (Muda) Elimination</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">Lean service logic demands the systematic tracking and removal of non-value-adding waste to protect margins.</p>
+                        <blockquote class="border-l-4 border-emerald-600 pl-3 text-xs italic text-slate-500">"Legacy dispatch loops relied on repeated verbal phone steps. This architecture targeted processing and motion waste, replacing loose data handoffs with single-touch transaction captures."</blockquote>
+                    </div>
+                    <span class="text-xs font-bold text-emerald-600 tracking-wide uppercase mt-4">Action: Standardize inputs to eliminate data decay.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">05. Behavioral Reasoning: Choice Architecture</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-8 flex-1 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-3">Choice Architecture & Friction Cost</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">Behavioral economics dictates that user compliance is directly shaped by cognitive load and friction. If an action breaks intuitive, daily behavioral paths, users drop out.</p>
+                    <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-xl">
+                        <h4 class="font-bold text-indigo-900 text-sm mb-1">Central Indian Demographic Reality:</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">The active patient base includes older, non-digitally native profiles. Forcing navigation through specialized app stores and password registrations creates severe "App Fatigue," rendering legacy portals highly ineffective.</p>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
+                    <h4 class="font-bold text-slate-800 text-center text-sm uppercase tracking-wide">Friction Analysis Comparison</h4>
+                    <div class="space-y-2">
+                        <div class="p-3 bg-red-50 rounded-lg border border-red-200">
+                            <p class="text-xs font-bold text-red-800"><i class="fa-solid fa-circle-xmark mr-1"></i> Native Standalone Portals (High Friction)</p>
+                            <p class="text-[11px] text-red-600 mt-0.5">App Store Search ➔ 45MB Download ➔ Account Creation ➔ Password Setup ➔ Complex UI Profile Layer.</p>
+                        </div>
+                        <div class="p-3 bg-green-50 rounded-lg border border-green-200">
+                            <p class="text-xs font-bold text-green-800"><i class="fa-solid fa-circle-check mr-1"></i> Conversational UI (Zero Friction)</p>
+                            <p class="text-[11px] text-green-600 mt-0.5">Patient uses WhatsApp (100% saturation tool) ➔ Scan QR or Click ➔ Real-time automated data validation line.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">06. Process Flow Tooling: Future-State SIPOC</h2>
+            </div>
+            <div class="flex-1 flex flex-col justify-center">
+                <p class="text-slate-600 text-sm mb-4 max-w-2xl">To transition away from manual helpdesk dependencies, the incoming data logic was systematically re-mapped into an automated **SIPOC** (Supplier, Input, Process, Output, Customer) framework:</p>
+                <div class="shadow-md rounded-xl overflow-hidden border border-slate-200 text-xs">
+                    <table class="w-full text-left bg-white">
+                        <thead class="bg-slate-900 text-white uppercase tracking-wider font-semibold">
+                            <tr>
+                                <th class="p-3 border-r border-slate-700">Supplier</th>
+                                <th class="p-3 border-r border-slate-700">Input</th>
+                                <th class="p-3 border-r border-slate-700">Process (Automated)</th>
+                                <th class="p-3 border-r border-slate-700">Output</th>
+                                <th class="p-3">Customer</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-700">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border-r font-bold">Patient / Caretaker</td>
+                                <td class="p-3 border-r">WhatsApp Chat Activation (Button/Text)</td>
+                                <td class="p-3 border-r">1. Webhook pushes payload.<br>2. Google Apps Script parses parameters.</td>
+                                <td class="p-3 border-r">Structured Salesforce Ticket Allocation</td>
+                                <td class="p-3 font-medium">On-Floor Personnel</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border-r font-bold">Field Team Device</td>
+                                <td class="p-3 border-r">Fulfillment Closure Confirmation</td>
+                                <td class="p-3 border-r">3. Script logs completion event.<br>4. Looker Studio re-calculates velocity.</td>
+                                <td class="p-3 border-r">Live SLA Verification Log</td>
+                                <td class="p-3 font-medium">Hospital Analytics / Administration</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">07. Portfolio A: Touchless Inpatient Service Dispatch</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-8 flex-1 items-center">
+                <div class="space-y-4">
+                    <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl">
+                        <h3 class="text-lg font-bold text-blue-900 mb-1">Server-Side Apps Script Integration</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">Built programmatic listeners directly within the Google suite ecosystem. Incoming JSON webhooks map metadata parameters (exact bed coordinates, ward locations) directly into active rows without user interface retraining for teams.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div class="p-3 bg-slate-50 border rounded-xl shadow-sm">
+                            <h4 class="font-bold text-slate-800"><i class="fa-solid fa-code text-blue-600 mr-1"></i> Data Cleansing</h4>
+                            <p class="text-slate-500 mt-0.5">Parameters are sanitized at point of origin, binding linguistic and position choices natively.</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 border rounded-xl shadow-sm">
+                            <h4 class="font-bold text-slate-800"><i class="fa-solid fa-shield text-blue-600 mr-1"></i> System Compliance</h4>
+                            <p class="text-slate-500 mt-0.5">Natively structures records to meet corporate data compliance guidelines.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-[11px] shadow-lg border border-slate-950 flex flex-col justify-center h-full max-h-[300px]">
+                    <div class="text-slate-400 mb-2">// Serverless Payload Processing</div>
+                    <p><span class="text-pink-400">function</span> <span class="text-blue-400">doPost</span>(e) {</p>
+                    <p class="pl-4"><span class="text-pink-400">var</span> data = JSON.<span class="text-yellow-400">parse</span>(e.postData.contents);</p>
+                    <p class="pl-4"><span class="text-pink-400">var</span> dept = <span class="text-yellow-400">routeDepartment</span>(data.serviceType);</p>
+                    <p class="pl-4"><span class="text-slate-400">// Dynamic routing to Salesforce queue</span></p>
+                    <p class="pl-4">SalesforceAPI.<span class="text-yellow-400">createTicket</span>(data.bed, dept);</p>
+                    <p class="pl-4 text-green-400">return ContentService.createTextOutput("SUCCESS");</p>
+                    <p>}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">08. Operational Tooling: Time-Motion Study</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-8 flex-1 items-center">
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-slate-800">Quantifying the Velocity Shift</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">By tracing the manual steps required to handle a routine inpatient request (housekeeping, dietary) versus the touchless digital pipeline, the study mapped out severe coordination leaks.</p>
+                    <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                        <div class="text-3xl font-black text-emerald-700">95%</div>
+                        <div class="text-xs font-bold uppercase text-emerald-900 tracking-wide mt-0.5">Reduction in Task Initiation Latency</div>
+                    </div>
+                </div>
+                <div class="space-y-2 text-xs">
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-lg">
+                        <div class="flex justify-between font-bold text-red-600 mb-1">
+                            <span>Legacy Path (Manual Phone Routing)</span>
+                            <span>~7.0 Mins</span>
+                        </div>
+                        <p class="text-slate-500 text-[11px]">Patient explains need ➔ Nurse calls helpdesk line ➔ Central dispatcher creates ledger ➔ Call placed to ward supervisor.</p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg shadow-sm">
+                        <div class="flex justify-between font-bold text-blue-700 mb-1">
+                            <span>Proposed Path (Touchless Webhook Integration)</span>
+                            <span>20 Secs</span>
+                        </div>
+                        <p class="text-slate-600 text-[11px]">Patient hits option in chat interface ➔ Webhook string instantly processes ➔ Direct device alert arrives at active supervisor corridor.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">09. Portfolio B: Tumor Board as a Service</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-8 flex-1 items-center">
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 h-full flex flex-col justify-center">
+                    <h3 class="text-lg font-bold text-slate-800 mb-2"><i class="fa-solid fa-arrows-split-up-and-left text-blue-600 mr-2"></i>Externalizing Internal Assets</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">Traditionally, the hospital's specialized multidisciplinary Tumor Board functioned as an internal validation shield. This strategy externalizes this resource as a premium consumer gateway.</p>
+                    <div class="p-3 bg-indigo-900 text-white rounded-lg">
+                        <p class="font-bold text-xs uppercase tracking-wide">Strategic Proposition:</p>
+                        <p class="text-[11px] text-indigo-200 mt-0.5">Market the collective board as a frictionless "Second Opinion" engine via WhatsApp to build consumer trust, capturing external patients before competitor facilities engage them.</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div class="p-3 bg-white shadow rounded-lg border-l-4 border-blue-600">
+                        <h4 class="font-bold text-slate-800 text-sm">Active Inbound Capture</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Frictionless submission of previous PET-CT records and voice memos via structured chat lines.</p>
+                    </div>
+                    <div class="p-3 bg-white shadow rounded-lg border-l-4 border-blue-600">
+                        <h4 class="font-bold text-slate-800 text-sm">Protected Treatment Pipelines</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Accelerates paths to final clinical consensus, driving high-margin asset utilization (LINAC/TrueBeam slots, surgical OTs).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">10. Additional Support: Zero-CapEx Wayfinding</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-8 flex-1 items-center">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Mitigating Physical Wayfinding Friction</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">Patient disorientation causes an invisible operational leak: frontline clinical nurses and security staff spend significant fractions of active shifts repeating spatial directions.</p>
+                    <div class="p-3 bg-orange-50 border border-orange-200 text-orange-900 rounded-lg text-xs font-semibold">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> System Bottleneck Impact:
+                        <p class="font-normal text-slate-600 mt-0.5">Lobby congestion creates cascading registration delays, shifting doctor timelines and limiting absolute client throughput margins per shift.</p>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 flex flex-col justify-between h-full">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-2">The Capital-Light Implementation Model</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">Developed a standalone HTML-based Interactive Floor Map with explicit directory markers. Deployed directly to browser loops via **existing lobby LED smart TVs**, reclaiming clinical focus with zero new hardware investment.</p>
+                    </div>
+                    <div class="flex items-center gap-4 bg-white p-3 rounded-lg border border-slate-100 shadow-sm mt-4">
+                        <i class="fa-solid fa-tv text-2xl text-blue-600"></i>
+                        <span class="text-xs font-bold text-slate-700">Transforms static displays into active wayfinding assets.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="text-3xl font-extrabold text-slate-900">11. Data Analysis Layer: Looker Studio BI</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-8 flex-1 items-center">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Live Volumetric & Geographic Clustering</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">The backend Apps Script architecture outputs real-time transactional logs. Pushing these rows seamlessly into Looker Studio replaces old static reviews with live, operational business intelligence metrics.</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex items-start"><i class="fa-solid fa-circle-nodes text-indigo-600 mt-0.5 mr-3"></i> <div><strong>Volume Analysis:</strong> Isolates real-time demand peaks between housekeeping and F&B tracks.</div></div>
+                        <div class="flex items-start"><i class="fa-solid fa-location-crosshairs text-indigo-600 mt-0.5 mr-3"></i> <div><strong>Corridor Mapping:</strong> Pinpoint exact ward density to allocate resources ahead of daily surges.</div></div>
+                    </div>
+                </div>
+                <div class="bg-slate-800 text-slate-300 rounded-xl p-4 shadow-inner border border-slate-700 flex flex-col justify-center items-center text-center h-48">
+                    <i class="fa-solid fa-chart-pie text-4xl text-blue-400 mb-3"></i>
+                    <p class="text-xs font-bold text-white tracking-wide uppercase">[Looker Studio Visualization Console]</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Tracks request densities and SLA outlier drift markers in real time.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-3xl font-extrabold text-slate-900">12. Executive Summary: Bottom-Line Impact</h2>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold uppercase rounded">Financial View</span>
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col justify-center">
+                <div class="shadow-lg rounded-xl overflow-hidden border border-slate-200 text-xs">
+                    <table class="w-full text-left bg-white">
+                        <thead class="bg-blue-800 text-white uppercase font-bold tracking-wider">
+                            <tr>
+                                <th class="p-3">Strategic Track</th>
+                                <th class="p-3">Operational Metric Target</th>
+                                <th class="p-3">P&L & Efficiency Advantage</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-700">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold">Cost Deflection (IP Bot)</td>
+                                <td class="p-3">~3.5 Administrative Hours Saved / Shift</td>
+                                <td class="p-3">Deflects premium overtime tracking; protects clinical nurse bandwidth parameters.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold">Asset Protection (OPD Interface)</td>
+                                <td class="p-3">Frictionless Lab Result & Estimations Access</td>
+                                <td class="p-3">De-congests central front-desk queues; mitigates outbound CRM overheads.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold">Revenue Capture (Tumor Board)</td>
+                                <td class="p-3">Retaining 10–12 Oncology Secondary Leads</td>
+                                <td class="p-3 font-semibold text-green-600">Drives downstream capture across LINAC/TrueBeam and surgical OTs.</td>
+                            </tr>
+                            <tr class="bg-blue-900 text-white">
+                                <td class="p-3 font-extrabold">Break-Even Velocity</td>
+                                <td class="p-3 font-bold text-blue-300">Time-To-ROI Matrix: &lt; 48 Hours</td>
+                                <td class="p-3 text-slate-100 font-medium">Variable costs scale with utility volume. Fully self-funding implementation.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-center text-slate-500 font-medium italic mt-6 text-sm">Conclusion: Operations is strategy in active execution.</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <span id="slide-counter">1 / 13</span>
+            <button class="btn-nav" id="prev-btn" title="Previous (Left Arrow)"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="btn-nav" id="next-btn" title="Next (Right Arrow / Spacebar)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const counter = document.getElementById('slide-counter');
+            let currentSlide = 0;
+
+            function updateSlides() {
+                slides.forEach((slide, index) => {
+                    if (index === currentSlide) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+                counter.innerText = `${currentSlide + 1} / ${slides.length}`;
+            }
+
+            function nextSlide() {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    updateSlides();
+                }
+            }
+
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlides();
+                }
+            }
+
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                }
+            });
+            
+            updateSlides();
+        });
+    </script>
+</body>
+</html>
